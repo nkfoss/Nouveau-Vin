@@ -1,1 +1,22 @@
-<p>navbar works!</p>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+	<a class="navbar-brand" href="#">Bootleg Wine Reviews:</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+		aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav mr-auto">
+
+			<li class="nav-item">
+				<a class="nav-link" (click)="onNavigate('country')">Countries</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" (click)="onPostUser()">Variety</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" (click)="'onNavigate'('critics')">Critics</a>
+			</li>
+
+		</ul>
+	</div>
+</nav>
