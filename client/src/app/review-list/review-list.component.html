@@ -4,10 +4,10 @@
 		<p>Placeholder text</p>
 	</div>
 	<div class="row cardList" >
-		<div *ngFor="let listItem of listItems; index as i" class="card" style="width: 18rem;">
+		<div *ngFor="let browseItems of browseItems; index as i" class="card" style="width: 18rem;">
 			<div class="card-body">
-				<h5 class="card-title countryName" (click)="onChooseCountry(i)">{{ listItem.value }}</h5>
-				<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ listItem.numReviews }}</h6>
+				<h5 class="card-title countryName" (click)="onChooseCountry(i)">{{ browseItem.value }}</h5>
+				<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ browseItem.numReviews }}</h6>
 			</div>
 		</div>
 	</div>

@@ -11,20 +11,20 @@ import { BrowseItem, DataService, Review } from '../data.service';
 export class ReviewListComponent implements OnInit {
 
   browsingCriteria: string
-  listItems: BrowseItem[] | Review[];
+  browseItems: BrowseItem[];
 
   constructor(private dataService: DataService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.browsingCriteria = this.activatedRoute.snapshot.paramMap.get('browsingCriteria')
-    this.dataService.fetchCriteria(this.browsingCriteria).subscribe(
-      (fetched: BrowseItem[] | Review[]) => {
+    this.dataService.fetchBrowseItems(this.browsingCriteria).subscribe(
+      (fetched: BrowseItem[]) => {
         console.log("Fetch successful;")
-        this.listItems = fetched;
+        this.browseItems = fetched;
       },
       (error) => {
         console.log(error);
-        this.listItems = [];
+        this.browseItems = [];
       }
     )
   }

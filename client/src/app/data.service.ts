@@ -4,15 +4,8 @@ import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators'
 import { ErrorHandlerService } from './error.service';
 
-export interface User {
-  id: number;
-  name: string;
-  fav_color: string;
-  isAdmin: boolean
-}
-
-export interface Country {
-  country: string;
+export interface BrowseItem {
+  value: string;
   numReviews: number;
 }
 
@@ -33,26 +26,15 @@ export interface Review {
 
 export class DataService {
 
-  user: User = {
-    id: 1,
-    name: 'Bandit',
-    fav_color: 'green',
-    isAdmin: true
-  }
-
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   }
 
-  onNavigateCountries(): Observable<Country[]> {
+  fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http
-      .get<Country[]>("http://localhost:3000/countries", { responseType: "json" })
+      .get<BrowseItem[]>(`http://localhost:3000/${browsingCriteria}`, { responseType: "json" })
   }
 
-  postUser(user: User): Observable<any> {
-    return this.http
-      .post<User>(`this.localhost:3000/createUser`, user, this.httpOptions)
-  }
 }
