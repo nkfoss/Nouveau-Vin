@@ -27,4 +27,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate([`/${criteria}`]);
   }
 
+  onNavigateHome(): void {
+    this.router.navigate(['home'])
+  }
+
 }
