@@ -11,6 +11,11 @@ export interface User {
   isAdmin: boolean
 }
 
+export interface Country {
+  country: string;
+  numReviews: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,9 +35,9 @@ export class DataService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   }
 
-  onNavigate(target: string): Observable<User[]> {
+  onNavigateCountries(): Observable<Country[]> {
     return this.http
-      .get<User[]>("http://localhost:3000/", { responseType: "json" })
+      .get<Country[]>("http://localhost:3000/countries", { responseType: "json" })
   }
 
   postUser(user: User): Observable<any> {
