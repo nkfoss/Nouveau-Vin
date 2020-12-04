@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { DataService, User } from '../data.service';
+import { Country, DataService, User } from '../data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,15 +16,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  onNavigate(target: string): void {
-    this.dataService.onNavigate(target)
-      .subscribe(
-        (userList: User[]) => {
-          console.log(userList[0].name)
-        },
-        error => {
-          console.log(error)
-        })
+  /**
+   * Navigating to countries will create the Review-List component. During init, this component will ask the Data Service for a list of countries.
+   * Once fetched, those countries will populate the 'list' on the template.
+   */
+  onNavigateCountries(): void {
+    this.router.navigate(['/countries'])
   }
 
   onPostUser(): void {
