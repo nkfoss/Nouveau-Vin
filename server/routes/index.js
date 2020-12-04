@@ -14,7 +14,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
     query = 'SELECT variety AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY variety'
   }
   else if(req.params.browsingCriteria === "critic") {
-    query = 'SELECT taster_name AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY taster_name'
+    query = 'SELECT taster_name AS value, COUNT(*) AS numReviews FROM wineReviews WHERE taster_name != "" GROUP BY taster_name'
   }
 
   // Here we have our query, with 3 things:
