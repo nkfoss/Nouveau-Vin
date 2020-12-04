@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { DataService, User } from '../data.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -25,10 +25,6 @@ export class NavbarComponent implements OnInit {
   onNavigate(event: Event): void {
     let criteria = (<HTMLElement>event.target).textContent.toLowerCase();
     this.router.navigate([`/${criteria}`]);
-  }
-
-  onPostUser(): void {
-    this.dataService.postUser(this.dataService.user)
   }
 
 }
