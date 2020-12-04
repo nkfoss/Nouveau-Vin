@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { Country, DataService } from '../data.service';
+import { Country, DataService, Review } from '../data.service';
 
 @Component({
   selector: 'app-review-list',
