@@ -16,6 +16,17 @@ export interface Country {
   numReviews: number;
 }
 
+export interface Review {
+  country: string;
+  description: string;
+  points: number;
+  price: number;
+  province: string;
+  region: string;
+  title: string;
+  variety: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
