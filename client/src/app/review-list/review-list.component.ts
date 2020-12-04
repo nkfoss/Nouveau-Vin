@@ -10,7 +10,7 @@ import { Country, DataService } from '../data.service';
 })
 export class ReviewListComponent implements OnInit {
 
-  countries: Country[];
+  listItems: Country[] | Review[];
 
   constructor(private dataService: DataService, private router: Router) { }
 
@@ -18,17 +18,14 @@ export class ReviewListComponent implements OnInit {
     this.dataService.onNavigateCountries().subscribe(
       (fetched: Country[]) => {
         console.log("Countries successfully fetched")
-        this.countries = fetched;
+        this.listItems = fetched;
       },
       error => {
         console.log(error);
-        this.countries = [];
+        this.listItems = [];
       }
     )
   }
 
-  onChooseCountry(countryIndex: number) {
-    
-  }
 
 }
