@@ -15,6 +15,7 @@ export class ReviewListComponent implements OnInit {
   constructor(private dataService: DataService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    console.log('inited')
     this.activatedRoute.params.subscribe(routeParams => {
       this.browsingCriteria = routeParams['browsingCriteria'];
       this.dataService.fetchBrowseItems(this.browsingCriteria).subscribe(

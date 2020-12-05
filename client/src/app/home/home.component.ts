@@ -12,6 +12,11 @@ export class HomeComponent implements OnInit {
   browsingCriteria: string;
   chosenCriteria: string;
 
+  reviewItems = [];
+  
+  heading: string;
+  subheading: string;
+
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService) { }
 
   ngOnInit() {
@@ -22,7 +27,7 @@ export class HomeComponent implements OnInit {
           this.browsingCriteria = params['browsingCriteria'];
           this.chosenCriteria = params['chosenCriteria'];
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-            (reviews: any) => { console.log(reviews) },
+            (reviews: any) => { this.reviewItems = reviews },
             (error) => { console.log(error) } 
           )
         }
@@ -30,6 +35,8 @@ export class HomeComponent implements OnInit {
         else {
           // Load the regular home page.
           console.log("we are home")
+          this.heading = "Bootleg Wine Reviews"
+          this.subheading = "Simply the best."
         }
       }
     )
