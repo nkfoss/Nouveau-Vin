@@ -8,7 +8,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   
-  {path: ':browsingCriteria', component: ReviewListComponent}
+  {path: ':browsingCriteria', component: ReviewListComponent},
+  {path: ':browsingCriteria/:chosenCriteria', component: HomeComponent},
 ];
 
 
