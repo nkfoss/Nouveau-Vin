@@ -1,8 +1,6 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { BrowseItem, DataService, Review } from '../data.service';
+import { BrowseItem, DataService } from '../data.service';
 
 @Component({
   selector: 'app-review-list',
@@ -30,17 +28,11 @@ export class ReviewListComponent implements OnInit {
         }
       )
     })
-    // this.activatedRoute.snapshot.paramMap.get('browsingCriteria')
-    // this.dataService.fetchBrowseItems(this.browsingCriteria).subscribe(
-    //   (fetched: BrowseItem[]) => {
-    //     console.log("Fetch successful;")
-    //     this.browseItems = fetched;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //     this.browseItems = [];
-    //   }
-    // )
+  }
+
+  onChooseCriteria(index: number) {
+    let chosenCriteria = this.browseItems[index].value;
+    this.router.navigate([chosenCriteria], {relativeTo: this.activatedRoute})
   }
 
 
