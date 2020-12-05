@@ -4,7 +4,6 @@ const mysqlDb = require('../db/mysqlConn')
 
 /* GET home page. */
 router.get('/:browsingCriteria', function (req, res, next) {
-  // res.render('index', { title: 'Express' });
   const criteria = req.params.browsingCriteria;
   let query = '';
   if(req.params.browsingCriteria === "country") {
@@ -17,10 +16,6 @@ router.get('/:browsingCriteria', function (req, res, next) {
     query = 'SELECT taster_name AS value, COUNT(*) AS numReviews FROM wineReviews WHERE taster_name != "" GROUP BY taster_name'
   }
 
-  // Here we have our query, with 3 things:
-  //  1) A SQL statement to execute (exluding data from the web), with a '?' placeholder for scrubbed data (see #2)
-  //  2) any data from the web stored in AN ARRAY. This allows the data to be scrubbed. IMPORTANT.
-  //  3) A callback function to execute containing a possible error, the fetched results, and 'fields
   mysqlDb.query(query, [], (error, results) => {
     if (error) {
       console.log(error);
@@ -31,6 +26,34 @@ router.get('/:browsingCriteria', function (req, res, next) {
     }
   })
 });
+
+router.get('/:browsingCriteria/:selectedCriteria', function(req, res, next) {
+  const browsingCriteria = req.params.browsingCriteria;
+  const selectedCriteria = req.params.selectedCriteria;
+  let query = '';
+  if (browsingCriteria === 'country') {
+    console.log('it is country')
+    query = 'SELECT * FROM wineReviews WHERE country = ?'
+  }
+  else if (browsingCriteria === 'variety') {
+    query = 'SELECT * FROM wineReviews WHERE variety = ?'
+  }
+  else if (browsingCriteria === 'critic') {
+    query = 'SELECT * FROM winereviews WHERE taster_name = ?'
+  }
+
+  mysqlDb.query(query, [selectedCriteria], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.send(error);
+    } else {
+      // console.log(results)
+      res.send(results);
+    }
+  })
+})
+
+
 
 
 module.exports = router;
