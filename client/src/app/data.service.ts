@@ -9,7 +9,7 @@ export interface BrowseItem {
   numReviews: number;
 }
 
-export interface Review {
+export interface ReviewItem {
   country: string;
   description: string;
   points: number;
@@ -35,6 +35,11 @@ export class DataService {
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http
       .get<BrowseItem[]>(`http://localhost:3000/${browsingCriteria}`, { responseType: "json" })
+  }
+
+  fetchReviewItems(browsingCriteria: string, selectedCritera: string): Observable<any> {
+    return this.http
+      .get(`http://localhost:3000/${browsingCriteria}/${selectedCritera}`, { responseType: 'json' })
   }
 
 }
