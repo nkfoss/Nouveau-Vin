@@ -3,11 +3,18 @@
 		<h1>{{ browsingCriteria | uppercase }}</h1>
 		<p>Choose a {{ browsingCriteria }} to see wine reviews.</p>
 	</div>
-	<div class="row cardList" >
-		<div *ngFor="let browseItem of browseItems; index as i" class="card" style="width: 18rem;">
-			<div class="card-body">
-				<h5 class="card-title countryName" (click)="onChooseCriteria(i)">{{ browseItem.value }}</h5>
-				<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ browseItem.numReviews }}</h6>
+	<div class="col">
+		<div class="row" *ngIf="this.browsingCriteria === 'variety'">
+			Some varieties not listed...
+			<a routerLink="all" style="padding-left: 5px">   Click here to see all varieties.</a>
+			<hr>
+		</div>
+		<div class="row cardList">
+			<div *ngFor="let browseItem of browseItems; index as i" class="card" style="width: 18rem;">
+				<div class="card-body">
+					<h5 class="card-title countryName" (click)="onChooseCriteria(i)">{{ browseItem.value }}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ browseItem.numReviews }}</h6>
+				</div>
 			</div>
 		</div>
 	</div>
