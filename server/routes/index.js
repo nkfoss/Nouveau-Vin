@@ -10,7 +10,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
     query = 'SELECT country AS value, COUNT(*) AS numReviews FROM wineReviews WHERE country != "" GROUP BY country'
   }
   else if(req.params.browsingCriteria === "variety") {
-    query = 'SELECT variety AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY variety'
+    query = 'SELECT * FROM (SELECT variety AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY variety) as qwe WHERE qwe.numreviews > 1000 ORDER BY value'
   }
   else if(req.params.browsingCriteria === "critic") {
     query = 'SELECT taster_name AS value, COUNT(*) AS numReviews FROM wineReviews WHERE taster_name != "" GROUP BY taster_name'
