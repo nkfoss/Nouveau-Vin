@@ -7,7 +7,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
   const criteria = req.params.browsingCriteria;
   let query = '';
   if(req.params.browsingCriteria === "country") {
-    query = 'SELECT country AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY country'
+    query = 'SELECT country AS value, COUNT(*) AS numReviews FROM wineReviews WHERE country != "" GROUP BY country'
   }
   else if(req.params.browsingCriteria === "variety") {
     query = 'SELECT variety AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY variety'
