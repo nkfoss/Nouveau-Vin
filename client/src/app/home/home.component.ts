@@ -1,3 +1,4 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, UrlSegment } from '@angular/router';
 import { DataService } from '../data.service';
@@ -13,9 +14,9 @@ export class HomeComponent implements OnInit {
   chosenCriteria: string;
 
   reviewItems = [];
-  
-  heading: string;
-  subheading: string;
+
+  heading: string = "Bootleg Wine Reviews";
+  subheading: string = "Simply the best.";
 
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService) { }
 
@@ -26,55 +27,29 @@ export class HomeComponent implements OnInit {
         if (params['browsingCriteria']) {
           this.browsingCriteria = params['browsingCriteria'];
           this.chosenCriteria = params['chosenCriteria'];
+          this.setHeadings();
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
             (reviews: any) => { this.reviewItems = reviews },
-            (error) => { console.log(error) } 
+            (error) => { console.log(error) }
           )
         }
 
         else {
           // Load the regular home page.
           console.log("we are home")
-          this.heading = "Bootleg Wine Reviews"
-          this.subheading = "Simply the best."
         }
       }
     )
-
-       // console.log("segment change")
-      // this.browsingCriteria = segments[0].path;
-      // if (segments.length === 2) {
-      //   this.chosenCriteria = segments[1].path;
-      // }
-      // this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-      //   (reviews: any) => {
-      //      console.log(reviews)
-      //   },
-      //   (error) => {
-      //     console.log(error)
-      //   } 
-      // )
-    // this.activatedRoute.params.subscribe(routeParams => {
-
-    //   this.browsingCriteria = routeParams['browsingCriteria'];
-    //   if (this.browsingCriteria) {
-
-    //   }
-    // })
   }
 
-  initSpecificReviews() {
-
-    // this.dataService.fetchReviewItems(this.browsingCriteria).subscribe(
-    //   (fetched: BrowseItem[]) => {
-    //     console.log("Fetch successful;")
-    //     this.browseItems = fetched;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //     this.browseItems = [];
-    //   }
-    // )
+  setHeadings() {
+    this.heading = this.chosenCriteria.toUpperCase()
+    if (this.browsingCriteria === "country") { this.subheading = `Browse reviews for wines from ${this.chosenCriteria}`; }
+    else if (this.browsingCriteria === "variety") { this.subheading = `Browse reviews for ${this.chosenCriteria}`; }
+    else if (this.browsingCriteria === "critic") { this.subheading = `Browse wines reviewd by ${this.chosenCriteria}`; }
+    else { this.subheading = "Simply the Best." }
   }
 
 }
+
+
