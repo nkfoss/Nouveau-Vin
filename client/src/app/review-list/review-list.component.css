@@ -1,13 +1,23 @@
+.jumbotron {
+	margin-bottom: 0;
+	background-color: #e2e2e2;
+}
+
 .cardList {
 	margin-top: 20px;
-	margin-left: 0px;
-	margin-right: 0px;
+	margin-left: 45px;
+	margin-right: 45px;
+	padding: 10px;
+	margin-bottom: 20px;
 	justify-content: center;
+	background-color: #edeef3;
 }
 
 .card {
 	margin: 10px;
+	margin-top: 20px;
 	height: fit-content;
+	box-shadow: 4px 8px #b4b4b4;
 }
 
 .countryName {
@@ -17,4 +27,30 @@
 .countryName:hover {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+@media only screen and (min-width: 1000px){
+	ul {
+		-webkit-columns: 3;
+		-moz-columns: 3;
+		columns: 3;
+		padding-left: 0;
+	}
+}
+
+@media only screen and (max-width: 999px) and (min-width: 750px) {
+	ul {
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		columns: 2;
+		padding-left: 0;
+	}
+}
+
+ul li {
+	list-style-position:  inside;
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	break-inside: 
+	avoid;
 }

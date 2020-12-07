@@ -1,0 +1,28 @@
+.jumbotron {
+	margin-bottom: 0;
+	background-color: #e2e2e2;
+}
+
+.cardList {
+	margin-top: 20px;
+	margin-left: 45px;
+	margin-right: 45px;
+	padding-top: 10px;
+	justify-content: center;
+	background-color: #edeef3;
+}
+
+.card {
+	margin: 10px;
+	margin-top: 20px;
+	height: fit-content;
+	box-shadow: 4px 8px #b4b4b4;
+}
+
+.card-header {
+	font-size: 17px;
+}
+
+.card-content{
+	padding-top: 10px;
+}

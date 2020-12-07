@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { Country, DataService } from '../data.service';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { BrowseItem, DataService } from '../data.service';
 
 @Component({
   selector: 'app-review-list',
@@ -10,25 +9,45 @@ import { Country, DataService } from '../data.service';
 })
 export class ReviewListComponent implements OnInit {
 
-  countries: Country[];
+  longView = false;
+  browsingCriteria: string
+  browseItems: BrowseItem[];
 
-  constructor(private dataService: DataService, private router: Router) { }
+  constructor(private dataService: DataService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.dataService.onNavigateCountries().subscribe(
-      (fetched: Country[]) => {
-        console.log("Countries successfully fetched")
-        this.countries = fetched;
-      },
-      error => {
-        console.log(error);
-        this.countries = [];
+    this.activatedRoute.url.subscribe((segments: UrlSegment[]) => {
+      this.browsingCriteria = segments[0].path
+
+      if (segments.length === 2) {
+        this.longView = true;
+        this.dataService.fetchAllVarieties().subscribe(
+          (fetched: BrowseItem[]) => {
+            console.log("Fetch successful;")
+            this.browseItems = fetched;
+          }, (error) => {
+            console.log(error);
+            this.browseItems = [];
+          }
+        ) 
+      } else {
+        this.dataService.fetchBrowseItems(this.browsingCriteria).subscribe(
+          (fetched: BrowseItem[]) => {
+            console.log("Fetch successful;")
+            this.browseItems = fetched;
+          }, (error) => {
+            console.log(error);
+            this.browseItems = [];
+          }
+        )
       }
-    )
+    })
   }
 
-  onChooseCountry(countryIndex: number) {
-    
+  onChooseCriteria(index: number) {
+    let chosenCriteria = this.browseItems[index].value;
+    this.router.navigate([chosenCriteria], { relativeTo: this.activatedRoute })
   }
+
 
 }

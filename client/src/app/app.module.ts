@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReviewListComponent } from './review-list/review-list.component';
+import { ReviewItemComponent } from './review-list/review-item/review-item.component';
 import { HomeComponent } from './home/home.component';
 import { CategoryItemComponent } from './review-list/category-item/category-item.component';
 
@@ -14,8 +15,9 @@ import { CategoryItemComponent } from './review-list/category-item/category-item
     AppComponent,
     NavbarComponent,
     ReviewListComponent,
-    HomeComponent,
-    CategoryItemComponent
+    ReviewItemComponent,
+    CategoryItemComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

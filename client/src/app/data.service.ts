@@ -4,16 +4,20 @@ import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators'
 import { ErrorHandlerService } from './error.service';
 
-export interface User {
-  id: number;
-  name: string;
-  fav_color: string;
-  isAdmin: boolean
+export interface BrowseItem {
+  value: string;
+  numReviews?: number;
 }
 
-export interface Country {
+export interface ReviewItem {
   country: string;
-  numReviews: number;
+  description: string;
+  points: number;
+  price: number;
+  province: string;
+  region: string;
+  title: string;
+  variety: string;
 }
 
 @Injectable({
@@ -22,26 +26,25 @@ export interface Country {
 
 export class DataService {
 
-  user: User = {
-    id: 1,
-    name: 'Bandit',
-    fav_color: 'green',
-    isAdmin: true
-  }
-
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   }
 
-  onNavigateCountries(): Observable<Country[]> {
+  fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http
-      .get<Country[]>("http://localhost:3000/countries", { responseType: "json" })
+      .get<BrowseItem[]>(`http://localhost:3000/${browsingCriteria}`, { responseType: "json" })
   }
 
-  postUser(user: User): Observable<any> {
+  fetchReviewItems(browsingCriteria: string, selectedCritera: string): Observable<any> {
     return this.http
-      .post<User>(`this.localhost:3000/createUser`, user, this.httpOptions)
+      .get(`http://localhost:3000/${browsingCriteria}/${selectedCritera}`, { responseType: 'json' })
   }
+
+  fetchAllVarieties(): Observable<BrowseItem[]> {
+    return this.http
+      .get<BrowseItem[]>(`http://localhost:3000/variety/all`, { responseType: 'json' })
+  }
+
 }
