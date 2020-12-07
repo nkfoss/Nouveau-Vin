@@ -6,7 +6,7 @@ import { ErrorHandlerService } from './error.service';
 
 export interface BrowseItem {
   value: string;
-  numReviews: number;
+  numReviews?: number;
 }
 
 export interface ReviewItem {
@@ -40,6 +40,11 @@ export class DataService {
   fetchReviewItems(browsingCriteria: string, selectedCritera: string): Observable<any> {
     return this.http
       .get(`http://localhost:3000/${browsingCriteria}/${selectedCritera}`, { responseType: 'json' })
+  }
+
+  fetchAllVarieties(): Observable<BrowseItem[]> {
+    return this.http
+      .get<BrowseItem[]>(`http://localhost:3000/variety/all`, { responseType: 'json' })
   }
 
 }
