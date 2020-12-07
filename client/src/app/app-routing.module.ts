@@ -7,8 +7,10 @@ import { ReviewListComponent } from './review-list/review-list.component';
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'variety/all', component: ReviewListComponent},
   
   {path: ':browsingCriteria', component: ReviewListComponent},
+  {path: ':browsingCriteria/all', component: ReviewListComponent},
   {path: ':browsingCriteria/:chosenCriteria', component: HomeComponent},
 ];
 
