@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
 
   heading: string = "Bootleg Wine Reviews";
   subheading: string = "Simply the best.";
+  location: string;
 
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService) { }
 
@@ -29,7 +30,9 @@ export class HomeComponent implements OnInit {
           this.chosenCriteria = params['chosenCriteria'];
           this.setHeadings();
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-            (reviews: any) => { this.reviewItems = reviews },
+            (reviews: any) => { 
+              this.reviewItems = reviews; 
+              console.log(reviews) },
             (error) => { console.log(error) }
           )
         }
@@ -48,6 +51,13 @@ export class HomeComponent implements OnInit {
     else if (this.browsingCriteria === "variety") { this.subheading = `Browse reviews for ${this.chosenCriteria}`; }
     else if (this.browsingCriteria === "critic") { this.subheading = `Browse wines reviewd by ${this.chosenCriteria}`; }
     else { this.subheading = "Simply the Best." }
+  }
+
+  getLocationHeading(reviewItem): string {
+    if (reviewItem.province === reviewItem.country) {return reviewItem.country}
+    else {
+      return `${reviewItem.province}, ${reviewItem.country}`
+    }
   }
 
 }
