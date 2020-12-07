@@ -7,13 +7,13 @@ router.get('/:browsingCriteria', function (req, res, next) {
   const criteria = req.params.browsingCriteria;
   let query = '';
   if(req.params.browsingCriteria === "country") {
-    query = 'SELECT country AS value, COUNT(*) AS numReviews FROM wineReviews WHERE country != "" GROUP BY country'
+    query = 'SELECT country AS value, numReviews FROM countries'
   }
   else if(req.params.browsingCriteria === "variety") {
-    query = 'SELECT * FROM (SELECT variety AS value, COUNT(*) AS numReviews FROM wineReviews GROUP BY variety) as qwe WHERE qwe.numreviews > 1000 ORDER BY value'
+    query = `SELECT variety AS value, numReviews FROM varieties WHERE numReviews > 1000 ORDER BY value`
   }
   else if(req.params.browsingCriteria === "critic") {
-    query = 'SELECT taster_name AS value, COUNT(*) AS numReviews FROM wineReviews WHERE taster_name != "" GROUP BY taster_name'
+    query = 'SELECT taster_name AS value, numReviews FROM tasters'
   }
 
   mysqlDb.query(query, [], (error, results) => {
