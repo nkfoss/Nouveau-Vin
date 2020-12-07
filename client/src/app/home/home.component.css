@@ -27,6 +27,10 @@
 	padding-top: 10px;
 }
 
+.btn-group {
+	float: left;
+}
+
 .points {
 	background-color: limegreen;
 	color: white;
@@ -37,4 +41,15 @@
 
 .location {
 	font-style: italic;
+	color: rgb(107, 107, 107);
+} 
+
+.price {
+	float: right;
+}
+
+.handle {
+	background-color: white;
+	color: rgb(0, 102, 255);
+	border-color: rgb(0, 102, 255);
 }

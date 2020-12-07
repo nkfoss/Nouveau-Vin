@@ -1,6 +1,6 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Params, Router, UrlSegment } from '@angular/router';
 import { DataService } from '../data.service';
 
 @Component({
@@ -14,12 +14,13 @@ export class HomeComponent implements OnInit {
   chosenCriteria: string;
 
   reviewItems = [];
+  selectedReviews = [];
 
   heading: string = "Bootleg Wine Reviews";
   subheading: string = "Simply the best.";
   location: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private dataService: DataService) { }
+  constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(
@@ -32,7 +33,8 @@ export class HomeComponent implements OnInit {
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
             (reviews: any) => { 
               this.reviewItems = reviews; 
-              console.log(reviews) },
+              this.selectReviews(1);
+            },
             (error) => { console.log(error) }
           )
         }
@@ -45,7 +47,13 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  setHeadings() {
+  private selectReviews(page: number) {
+    let start = (page - 1)*18;
+    let end = (page*18);
+    this.selectedReviews = this.reviewItems.slice(start, end);
+  }
+
+  private setHeadings() {
     this.heading = this.chosenCriteria.toUpperCase()
     if (this.browsingCriteria === "country") { this.subheading = `Browse reviews for wines from ${this.chosenCriteria}`; }
     else if (this.browsingCriteria === "variety") { this.subheading = `Browse reviews for ${this.chosenCriteria}`; }
@@ -58,6 +66,21 @@ export class HomeComponent implements OnInit {
     else {
       return `${reviewItem.province}, ${reviewItem.country}`
     }
+  }
+
+  roundDecimal(price: number): number {
+    return Math.round(price)
+  }
+
+  onNavigateTwitter(handle: string): void {
+    handle = handle.replace('@', '');
+    let url = "http://www.twitter.com/" + handle;
+    window.open(url, "_blank");
+  }
+
+  onBrowseCritic(name: string) {
+    console.log('critic/' + name)
+    this.router.navigate(['critic/' + name])
   }
 
 }
