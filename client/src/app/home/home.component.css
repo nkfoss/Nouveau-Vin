@@ -26,3 +26,15 @@
 .card-content{
 	padding-top: 10px;
 }
+
+.points {
+	background-color: limegreen;
+	color: white;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-radius: 10%;
+}
+
+.location {
+	font-style: italic;
+}
