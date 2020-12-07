@@ -44,16 +44,15 @@ router.get('/:browsingCriteria/:selectedCriteria', function(req, res, next) {
   const browsingCriteria = req.params.browsingCriteria;
   const selectedCriteria = req.params.selectedCriteria;
   let query = '';
-  if (browsingCriteria === 'country') {
-    console.log('it is country')
-    query = 'select * from wineReviews as w join countries as c on w.fkCountry = c.id where c.country = ?'
-  }
-  else if (browsingCriteria === 'variety') {
-    query = 'SELECT * FROM winereviews AS w JOIN varieties AS v ON w.fkVariety = v.id WHERE v.variety = ?'
-  }
-  else if (browsingCriteria === 'critic') {
-    query = 'SELECT * FROM winereviews AS w JOIN tasters AS t ON w.fkTaster = t.id WHERE t.taster_name = ?'
-  }
+  let joinedTables = 
+  'select * from wineReviews as w ' +
+  'join countries as c on w.fkCountry = c.id ' +
+  'join varieties as v on w.fkVariety = v.id ' +
+  'join tasters as t on w.fkTaster = t.id '
+
+  if (browsingCriteria === 'country') { query = joinedTables + 'WHERE c.country = ?' }
+  else if (browsingCriteria === 'variety') { query = joinedTables + 'WHERE v.variety = ?' }
+  else if (browsingCriteria === 'critic') { query = joinedTables + 'WHERE t.taster_name = ?'}
 
   mysqlDb.query(query, [selectedCriteria], (error, results) => {
     if (error) {
