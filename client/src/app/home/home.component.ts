@@ -8,6 +8,8 @@ import { DataService } from '../data.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+//=============================================================================================================
 export class HomeComponent implements OnInit {
 
   browsingCriteria: string;
@@ -20,7 +22,7 @@ export class HomeComponent implements OnInit {
   subheading: string = "Simply the best.";
   location: string;
   page: number;
-
+//==============================================================================================================
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
@@ -32,8 +34,8 @@ export class HomeComponent implements OnInit {
           this.chosenCriteria = params['chosenCriteria'];
           this.setHeadings();
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-            (reviews: any) => { 
-              this.reviewItems = reviews; 
+            (reviews: any) => {
+              this.reviewItems = reviews;
               this.page = 1;
               this.selectReviews(this.page);
             },
@@ -42,16 +44,13 @@ export class HomeComponent implements OnInit {
         }
 
         else {
-          console.log("we are home")
+          console.log("we are home");
+          this.dataService.fetchRandoms().subscribe(
+            (reviews: any) => { this.selectedReviews = reviews;}
+          );
         }
       }
     )
-  }
-
-  private selectReviews(page: number) {
-    let start = (page - 1)*18;
-    let end = (page*18);
-    this.selectedReviews = this.reviewItems.slice(start, end);
   }
 
   private setHeadings() {
@@ -62,8 +61,15 @@ export class HomeComponent implements OnInit {
     else { this.subheading = "Simply the Best." }
   }
 
+  private selectReviews(page: number) {
+    let start = (page - 1) * 18;
+    let end = (page * 18);
+    this.selectedReviews = this.reviewItems.slice(start, end);
+  }
+
+//==========================================================================================================================================
   getLocationHeading(reviewItem): string {
-    if (reviewItem.province === reviewItem.country) {return reviewItem.country}
+    if (reviewItem.province === reviewItem.country) { return reviewItem.country }
     else {
       return `${reviewItem.province}, ${reviewItem.country}`
     }
@@ -82,7 +88,7 @@ export class HomeComponent implements OnInit {
   onBrowseCritic(name: string) {
     console.log('critic/' + name)
     this.router.
-    navigate(['critic/' + name])
+      navigate(['critic/' + name])
   }
 
   getMaxPages(): number {
@@ -90,13 +96,13 @@ export class HomeComponent implements OnInit {
   }
 
   previousClass(): string {
-    if (this.page != 1) { return "page-item" }
-    else { return "page-item disabled"}
+    if (this.page > 1) { return "page-item" }
+    else { return "page-item disabled" }
   }
 
   nextClass(): string {
-    if (this.page != this.getMaxPages() ) { return "page-item"}
-    else { return "page-item disabled"}
+    if (this.page != this.getMaxPages()) { return "page-item" }
+    else { return "page-item disabled" }
   }
 
   changePage(change: number) {
