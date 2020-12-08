@@ -46,7 +46,8 @@ export class HomeComponent implements OnInit {
         else {
           console.log("we are home");
           this.dataService.fetchRandoms().subscribe(
-            (reviews: any) => { this.selectedReviews = reviews;}
+            (reviews: any) => { this.selectedReviews = reviews;},
+            (error) => { console.log(error) }
           );
         }
       }
@@ -58,7 +59,6 @@ export class HomeComponent implements OnInit {
     if (this.browsingCriteria === "country") { this.subheading = `Browse reviews for wines from ${this.chosenCriteria}`; }
     else if (this.browsingCriteria === "variety") { this.subheading = `Browse reviews for ${this.chosenCriteria}`; }
     else if (this.browsingCriteria === "critic") { this.subheading = `Browse wines reviewd by ${this.chosenCriteria}`; }
-    else { this.subheading = "Simply the Best." }
   }
 
   private selectReviews(page: number) {

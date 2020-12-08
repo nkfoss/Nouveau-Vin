@@ -12,7 +12,7 @@ router.get('/countReviews', function (req, res, next) {
       query = getRandomsQuery(numRows);
       mysqlDb.query(query, [], (error, results) => {
         if (error) { console.log(error); res.send(error); }
-        else { res.send(results); }
+        else { console.log(results); res.send(results); }
       })
     }
   })
@@ -51,7 +51,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
 });
 
 router.get('/variety/all', function (req, res, next) {
-  query = "SELECT variety as value FROM varieties"
+  let query = "SELECT variety as value FROM varieties"
   mysqlDb.query(query, [], (error, results) => {
     if (error) { console.log(error); res.send(error); }
     else { res.send(results); }
@@ -75,7 +75,5 @@ router.get('/:browsingCriteria/:selectedCriteria', function (req, res, next) {
   })
 })
 
-
-
-
+//=======================================================================================
 module.exports = router;
