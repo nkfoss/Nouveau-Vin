@@ -3,6 +3,12 @@ var express = require('express');
 var router = express.Router();
 const mysqlDb = require('../db/mysqlConn');
 
+const joinedTables =
+  'SELECT * FROM wineReviews AS w ' +
+  'JOIN countries AS c ON w.fkCountry = c.id ' +
+  'JOIN varieties AS v ON w.fkVariety = v.id ' +
+  'JOIN tasters AS t ON w.fkTaster = t.id ';
+
 router.get('/countReviews', function (req, res, next) {
   let query = 'SELECT count(*) AS count FROM winereviews';
   mysqlDb.query(query, [], (error, results) => {
@@ -28,15 +34,23 @@ function getRandomsQuery(numRows) {
     count++;
   }
   idList = idList.replace(/,[ ]$/, ')')
-  let joinedTables =
-    'SELECT * FROM wineReviews AS w ' +
-    'JOIN countries AS c ON w.fkCountry = c.id ' +
-    'JOIN varieties AS v ON w.fkVariety = v.id ' +
-    'JOIN tasters AS t ON w.fkTaster = t.id ';
   let query = joinedTables + 'WHERE w.id IN ' + idList;
   console.log(query);
   return query;
 }
+
+router.get('/search/:searchTerm', function (req, res, next) {
+  let query = joinedTables + 'WHERE w.description LIKE %?% OR ' +
+    'w.designation LIKE %?% OR ' + 'w.winery LIKE %?% OR ' +
+    'c.country LIKE %?% OR ' + 'w.province LIKE %?% OR ' +
+    'w.region LIKE %?% OR ' + 't.taster_name LIKE %?% OR ' +
+    't.taster_twitter LIKE %?% ';
+    mysqlDb.query(query, [req.params.searchTerm], (error, results) => {
+      if (error) { console.log(error); res.send(error); }
+      else { console.log(results); res.send(results); }
+    });
+    
+})
 
 router.get('/:browsingCriteria', function (req, res, next) {
   let query = '';
@@ -60,11 +74,6 @@ router.get('/variety/all', function (req, res, next) {
 
 router.get('/:browsingCriteria/:selectedCriteria', function (req, res, next) {
   let query = '';
-  let joinedTables =
-    'select * from wineReviews as w ' +
-    'join countries as c on w.fkCountry = c.id ' +
-    'join varieties as v on w.fkVariety = v.id ' +
-    'join tasters as t on w.fkTaster = t.id ';
   if (req.params.browsingCriteria === 'country') { query = joinedTables + 'WHERE c.country = ?'; }
   else if (req.params.browsingCriteria === 'variety') { query = joinedTables + 'WHERE v.variety = ?'; }
   else if (req.params.browsingCriteria === 'critic') { query = joinedTables + 'WHERE t.taster_name = ?'; }
