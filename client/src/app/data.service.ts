@@ -47,4 +47,8 @@ export class DataService {
       .get<BrowseItem[]>(`http://localhost:3000/variety/all`, { responseType: 'json' })
   }
 
+  fetchRandoms(): Observable<any> {
+    return this.http.get(`http://localhost:3000/countReviews`, { responseType: 'json' })
+  }
+
 }
