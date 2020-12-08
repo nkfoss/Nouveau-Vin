@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   heading: string = "Bootleg Wine Reviews";
   subheading: string = "Simply the best.";
   location: string;
+  page: number;
 
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
@@ -33,14 +34,14 @@ export class HomeComponent implements OnInit {
           this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
             (reviews: any) => { 
               this.reviewItems = reviews; 
-              this.selectReviews(1);
+              this.page = 1;
+              this.selectReviews(this.page);
             },
             (error) => { console.log(error) }
           )
         }
 
         else {
-          // Load the regular home page.
           console.log("we are home")
         }
       }
@@ -80,9 +81,28 @@ export class HomeComponent implements OnInit {
 
   onBrowseCritic(name: string) {
     console.log('critic/' + name)
-    this.router.navigate(['critic/' + name])
+    this.router.
+    navigate(['critic/' + name])
   }
 
+  getMaxPages(): number {
+    return Math.ceil(this.reviewItems.length / 18)
+  }
+
+  previousClass(): string {
+    if (this.page != 1) { return "page-item" }
+    else { return "page-item disabled"}
+  }
+
+  nextClass(): string {
+    if (this.page != this.getMaxPages() ) { return "page-item"}
+    else { return "page-item disabled"}
+  }
+
+  changePage(change: number) {
+    this.page = this.page + change;
+    this.selectReviews(this.page);
+  }
 }
 
 

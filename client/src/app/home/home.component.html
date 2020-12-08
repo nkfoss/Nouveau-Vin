@@ -3,15 +3,15 @@
 		<h1>{{ heading }}</h1>
 		<p>{{ subheading }}</p>
 	</div>
-	<nav aria-label="Page navigation example">
-		<ul class="pagination">
-		  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-		  <li class="page-item"><a class="page-link" href="#">1</a></li>
-		  <li class="page-item"><a class="page-link" href="#">2</a></li>
-		  <li class="page-item"><a class="page-link" href="#">3</a></li>
-		  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-		</ul>
-	  </nav>
+	<div class="row" style="justify-content: center ;">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
+				<li class="page-item" class="pageNum"><div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div></li>
+				<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
+			</ul>
+		</nav>
+	</div>
 	<div class="row cardList">
 		<div *ngFor="let reviewItem of selectedReviews; index as i" class="card" style="width: 18rem;">
 			<h5 class="card-header" (click)="onChooseCriteria(i)">
@@ -29,7 +29,8 @@
 			</div>
 			<div class="card-footer">
 				<div class="btn-group" role="group" aria-label="Basic example">
-					<button type="button" class="btn btn-primary" (click)="onBrowseCritic(reviewItem.taster_name)">{{ reviewItem.taster_name}}</button>
+					<button type="button" class="btn btn-primary"
+						(click)="onBrowseCritic(reviewItem.taster_name)">{{ reviewItem.taster_name}}</button>
 					<button *ngIf="reviewItem.taster_twitter" type="button" class="btn btn-secondary handle"
 						(click)="onNavigateTwitter(reviewItem.taster_twitter)">
 						{{ reviewItem.taster_twitter }}
@@ -37,5 +38,14 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row" style="justify-content: center ;">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
+				<li class="page-item" class="pageNum"><div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div></li>
+				<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
+			</ul>
+		</nav>
 	</div>
 </div>

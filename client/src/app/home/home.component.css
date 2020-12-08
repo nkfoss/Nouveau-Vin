@@ -53,3 +53,20 @@
 	color: rgb(0, 102, 255);
 	border-color: rgb(0, 102, 255);
 }
+
+.page-item:hover {
+	cursor: pointer;
+}
+
+.page-item.disabled:hover {
+	cursor: default;
+}
+
+.pageNum {
+	color: black;
+}
+.pageNum:hover {
+	background-color: white;
+	color:black;
+}
+
