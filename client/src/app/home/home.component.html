@@ -3,7 +3,7 @@
 		<h1>{{ heading }}</h1>
 		<p>{{ subheading }}</p>
 	</div>
-	<div class="row" style="justify-content: center ;">
+	<div *ngIf="this.page" class="row" style="justify-content: center ;">
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" style="justify-content: center ;">
+	<div *ngIf="this.page" class="row" style="justify-content: center ;">
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
