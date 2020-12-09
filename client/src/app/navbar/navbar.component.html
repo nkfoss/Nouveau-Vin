@@ -16,7 +16,12 @@
 			<li class="nav-item">
 				<a class="nav-link" (click)="onNavigate($event)">Critic</a>
 			</li>
-
 		</ul>
+		<div class="search-container">
+			<div class="form-inline"> 
+				<input class="form-control mr-sm-2" [(ngModel)]="searchTerm" type="search" placeholder="Search" maxlength="50" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" (click)="onSearch()">Search</button>
+			</div>
+		</div>
 	</div>
 </nav>

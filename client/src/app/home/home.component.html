@@ -3,49 +3,60 @@
 		<h1>{{ heading }}</h1>
 		<p>{{ subheading }}</p>
 	</div>
-	<div *ngIf="this.page" class="row" style="justify-content: center ;">
-		<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
-				<li class="page-item" class="pageNum"><div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div></li>
-				<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
-			</ul>
-		</nav>
-	</div>
-	<div class="row cardList">
-		<div *ngFor="let reviewItem of selectedReviews; index as i" class="card" style="width: 18rem;">
-			<h5 class="card-header" (click)="onChooseCriteria(i)">
-				<span class="points" title="{{reviewItem.points}} / 100 points">{{ reviewItem.points }}</span>
-				{{ reviewItem.title }}
-				<div>
-					<span class="location">
-						{{ this.getLocationHeading(reviewItem) }}
-					</span>
-					<span class="price" *ngIf="reviewItem.price">${{ this.roundDecimal(reviewItem.price) }} </span>
+	<span *ngIf="this.selectedReviews.length > 0">
+		<div *ngIf="this.page" class="row" style="justify-content: center ;">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
+					<li class="page-item" class="pageNum">
+						<div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div>
+					</li>
+					<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="row cardList">
+			<div *ngFor="let reviewItem of selectedReviews; index as i" class="card" style="width: 18rem;">
+				<h5 class="card-header" (click)="onChooseCriteria(i)">
+					<span class="points" title="{{reviewItem.points}} / 100 points">{{ reviewItem.points }}</span>
+					{{ reviewItem.title }}
+					<div>
+						<span class="location">
+							{{ this.getLocationHeading(reviewItem) }}
+						</span>
+						<span class="price" *ngIf="reviewItem.price">${{ this.roundDecimal(reviewItem.price) }} </span>
+					</div>
+				</h5>
+				<div class="card-body">
+					<h6 class="card-content mb-2 text-muted"> {{ reviewItem.description }}</h6>
 				</div>
-			</h5>
-			<div class="card-body">
-				<h6 class="card-content mb-2 text-muted"> {{ reviewItem.description }}</h6>
-			</div>
-			<div class="card-footer">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					<button type="button" class="btn btn-primary"
-						(click)="onBrowseCritic(reviewItem.taster_name)">{{ reviewItem.taster_name}}</button>
-					<button *ngIf="reviewItem.taster_twitter" type="button" class="btn btn-secondary handle"
-						(click)="onNavigateTwitter(reviewItem.taster_twitter)">
-						{{ reviewItem.taster_twitter }}
-					</button>
+				<div class="card-footer">
+					<div class="btn-group" role="group" aria-label="Basic example">
+						<button type="button" class="btn btn-primary"
+							(click)="onBrowseCritic(reviewItem.taster_name)">{{ reviewItem.taster_name}}</button>
+						<button *ngIf="reviewItem.taster_twitter" type="button" class="btn btn-secondary handle"
+							(click)="onNavigateTwitter(reviewItem.taster_twitter)">
+							{{ reviewItem.taster_twitter }}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div *ngIf="this.page" class="row" style="justify-content: center ;">
-		<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
-				<li class="page-item" class="pageNum"><div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div></li>
-				<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
-			</ul>
-		</nav>
-	</div>
+		<div *ngIf="this.page" class="row" style="justify-content: center ;">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="{{ previousClass() }}"><a class="page-link" (click)="changePage(-1)">Prev</a></li>
+					<li class="page-item" class="pageNum">
+						<div class="page-link pageNum">Page: {{ page }} / {{ this.getMaxPages() }}</div>
+					</li>
+					<li class="{{ nextClass() }}"><a class="page-link" (click)="changePage(1)">Next</a></li>
+				</ul>
+			</nav>
+		</div>
+	</span>
+	<span *ngIf="this.selectedReviews.length === 0">
+		<div class="cardList row">
+			<h4>{{ loadingStatus }}</h4>
+		</div>
+	</span>
 </div>

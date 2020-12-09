@@ -1,29 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ErrorHandlerService } from './error.service';
-
-export interface BrowseItem {
-  value: string;
-  numReviews?: number;
-}
-
-export interface ReviewItem {
-  country: string;
-  description: string;
-  points: number;
-  price: number;
-  province: string;
-  region: string;
-  title: string;
-  variety: string;
-}
+import { BrowseItem } from './shared/browseitem.model';
+import { ReviewItem } from './shared/reviewitem.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataService {
+
+  reviewSubject = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
@@ -48,6 +36,17 @@ export class DataService {
 
   fetchRandoms(): Observable<any> {
     return this.http.get(`http://localhost:3000/countReviews`, { responseType: 'json' })
+  }
+
+  searchReviews(searchTerm: string) {
+    this.http.get<ReviewItem[]>(`http://localhost:3000/search/${searchTerm}`, { responseType: 'json' }).subscribe(
+      (reviews: ReviewItem[]) => {
+        this.reviewSubject.next({
+          reviews: reviews,
+          searchTerm: searchTerm
+        });
+      }
+    )
   }
 
 }

@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { DataService } from '../data.service';
 
 @Component({
@@ -9,12 +9,11 @@ import { DataService } from '../data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
+
+  searchTerm: string = '';
 
   constructor(private dataService: DataService, private router: Router) { }
-
-  ngOnInit() {
-  }
 
   /**
    * Navigating will create the Review-List component. During init, this component will ask the Data Service for an array of objects matching the browsing criteria.
@@ -29,6 +28,10 @@ export class NavbarComponent implements OnInit {
 
   onNavigateHome(): void {
     this.router.navigate(['home'])
+  }
+
+  onSearch() {
+    this.router.navigate([`/search/${this.searchTerm}`])
   }
 
 }
