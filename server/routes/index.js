@@ -1,4 +1,3 @@
-const { query } = require('express');
 var express = require('express');
 var router = express.Router();
 const mysqlDb = require('../db/mysqlConn');
@@ -40,17 +39,23 @@ function getRandomsQuery(numRows) {
 }
 
 router.get('/search/:searchTerm', function (req, res, next) {
-  let query = joinedTables + 'WHERE w.description LIKE %?% OR ' +
-    'w.designation LIKE %?% OR ' + 'w.winery LIKE %?% OR ' +
-    'c.country LIKE %?% OR ' + 'w.province LIKE %?% OR ' +
-    'w.region LIKE %?% OR ' + 't.taster_name LIKE %?% OR ' +
-    't.taster_twitter LIKE %?% ';
-    mysqlDb.query(query, [req.params.searchTerm], (error, results) => {
+  let query = joinedTables + 'WHERE w.description LIKE ? OR ' +
+    'w.designation LIKE ? OR ' + 'w.winery LIKE ? OR ' +
+    'c.country LIKE ? OR ' + 'w.province LIKE ? OR ' +
+    'w.region_1 LIKE ? OR ' + 't.taster_name LIKE ? OR ' +
+    't.taster_twitter LIKE ?';
+    paramsArray = createParamsArray(req.params.searchTerm);
+    mysqlDb.query(query, paramsArray, (error, results) => {
       if (error) { console.log(error); res.send(error); }
       else { console.log(results); res.send(results); }
     });
-    
 })
+
+function createParamsArray(param) {
+  var arr = [];
+  for (var i = 0; i <= 8; i++) { arr = arr.concat(`%` + param + `%`); }
+  return arr;
+}
 
 router.get('/:browsingCriteria', function (req, res, next) {
   let query = '';
