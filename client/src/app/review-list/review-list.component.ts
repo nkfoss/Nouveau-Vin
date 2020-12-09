@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { BrowseItem, DataService } from '../data.service';
+import { DataService } from '../data.service';
+import { BrowseItem } from '../shared/browseitem.model';
 
 @Component({
   selector: 'app-review-list',
