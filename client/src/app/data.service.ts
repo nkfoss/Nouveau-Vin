@@ -1,29 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ErrorHandlerService } from './error.service';
-
-export interface BrowseItem {
-  value: string;
-  numReviews?: number;
-}
-
-export interface ReviewItem {
-  country: string;
-  description: string;
-  points: number;
-  price: number;
-  province: string;
-  region: string;
-  title: string;
-  variety: string;
-}
+import { BrowseItem } from './shared/browseitem.model';
+import { ReviewItem } from './shared/reviewitem.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataService {
+
+  reviewSubject = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
