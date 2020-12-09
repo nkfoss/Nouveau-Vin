@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { DataService } from '../data.service';
 
 @Component({
@@ -10,6 +10,8 @@ import { DataService } from '../data.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
+  searchTerm: string = '';
 
   constructor(private dataService: DataService, private router: Router) { }
 
@@ -29,6 +31,11 @@ export class NavbarComponent implements OnInit {
 
   onNavigateHome(): void {
     this.router.navigate(['home'])
+  }
+
+  onSearch() {
+    console.log(this.searchTerm)
+    this.dataService.searchReviews(this.searchTerm);
   }
 
 }
