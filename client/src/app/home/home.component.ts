@@ -1,7 +1,7 @@
-import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataService } from '../data.service';
+import { ReviewItem } from '../shared/reviewitem.model';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +28,15 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       (params: Params) => {
+
+        this.dataService.reviewSubject.subscribe(
+          (data) => {
+            this.subheading = "Showing results for: '" + data.searchTerm + "'";
+            this.reviewItems = data.reviews;
+            this.page = 1;
+            this.selectReviews(1);
+          }
+        )
 
         if (params['browsingCriteria']) {
           this.browsingCriteria = params['browsingCriteria'];
