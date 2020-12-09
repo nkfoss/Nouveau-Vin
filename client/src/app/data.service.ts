@@ -50,4 +50,17 @@ export class DataService {
     return this.http.get(`http://localhost:3000/countReviews`, { responseType: 'json' })
   }
 
+  searchReviews(searchTerm: string) {
+    this.http.get<ReviewItem[]>(`http://localhost:3000/search/${searchTerm}`, { responseType: 'json' }).subscribe(
+      (reviews: ReviewItem[]) => {
+        console.log("sending out sub")
+        console.log(reviews)
+        this.reviewSubject.next({
+          searchTerm: searchTerm,
+          reviews: reviews,
+        })
+      }
+    )
+  }
+
 }
