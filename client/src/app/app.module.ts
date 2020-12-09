@@ -9,6 +9,7 @@ import { ReviewListComponent } from './review-list/review-list.component';
 import { ReviewItemComponent } from './review-list/review-item/review-item.component';
 import { HomeComponent } from './home/home.component';
 import { CategoryItemComponent } from './review-list/category-item/category-item.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CategoryItemComponent } from './review-list/category-item/category-item
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
