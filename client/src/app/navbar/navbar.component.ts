@@ -9,14 +9,11 @@ import { DataService } from '../data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
   searchTerm: string = '';
 
   constructor(private dataService: DataService, private router: Router) { }
-
-  ngOnInit() {
-  }
 
   /**
    * Navigating will create the Review-List component. During init, this component will ask the Data Service for an array of objects matching the browsing criteria.
@@ -34,8 +31,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onSearch() {
-    console.log(this.searchTerm)
-    this.dataService.searchReviews(this.searchTerm);
+    this.router.navigate([`/search/${this.searchTerm}`])
   }
 
 }
