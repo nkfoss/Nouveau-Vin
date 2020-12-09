@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataService } from '../data.service';
-import { ReviewItem } from '../shared/reviewitem.model';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +10,8 @@ import { ReviewItem } from '../shared/reviewitem.model';
 
 //=============================================================================================================
 export class HomeComponent implements OnInit {
+
+  loadingStatus: string = 'Loading...';
 
   browsingCriteria: string;
   chosenCriteria: string;
@@ -22,42 +23,59 @@ export class HomeComponent implements OnInit {
   subheading: string = "Simply the best.";
   location: string;
   page: number;
-//==============================================================================================================
+  //==============================================================================================================
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(
-      (params: Params) => {
+    this.setupSearchSub();
+    this.activatedRoute.params.subscribe((params: Params) => { this.handleNewParams(params) })
+  }
 
-        this.dataService.reviewSubject.subscribe(
-          (data) => {
-            this.subheading = "Showing results for: '" + data.searchTerm + "'";
-            this.reviewItems = data.reviews;
+  private handleNewParams(params: Params) {
+    // In this case, we have some kind of category of reviews
+    if (params['browsingCriteria']) {
+      if (params['browsingCriteria'] === "search") { // Categorized by search term
+        console.log('searching')
+        let searchTerm = params['chosenCriteria'];
+        this.heading = searchTerm;
+        this.dataService.searchReviews(searchTerm);
+      }
+      else {  // Variety/country/taster category
+        this.browsingCriteria = params['browsingCriteria'];
+        this.chosenCriteria = params['chosenCriteria'];
+        this.setHeadings();
+        this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
+          (reviews: any) => {
+            this.reviewItems = reviews;
             this.page = 1;
-            this.selectReviews(1);
-          }
+            this.selectReviews(this.page);
+          },
+          (error) => { console.log(error) }
         )
+      }
+    }
+    // In this case, we were just loading the homepage with random reviews
+    else {
+      this.dataService.fetchRandoms().subscribe(
+        (reviews: any) => { this.selectedReviews = reviews; },
+        (error) => { console.log(error) }
+      );
+    }
+  }
 
-        if (params['browsingCriteria']) {
-          this.browsingCriteria = params['browsingCriteria'];
-          this.chosenCriteria = params['chosenCriteria'];
-          this.setHeadings();
-          this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-            (reviews: any) => {
-              this.reviewItems = reviews;
-              this.page = 1;
-              this.selectReviews(this.page);
-            },
-            (error) => { console.log(error) }
-          )
+  private setupSearchSub() {
+    this.dataService.reviewSubject.subscribe(
+      (data) => {
+        this.subheading = "Showing results for: '" + data.searchTerm + "'";
+        if (data.reviews.length > 0) {
+          console.log(data.reviews)
+          this.reviewItems = data.reviews
+          this.page = 1;
+          this.selectReviews(1);
         }
-
         else {
-          console.log("we are home");
-          this.dataService.fetchRandoms().subscribe(
-            (reviews: any) => { this.selectedReviews = reviews;},
-            (error) => { console.log(error) }
-          );
+          this.selectedReviews = [];
+          this.loadingStatus = "No results to show."
         }
       }
     )
@@ -76,7 +94,7 @@ export class HomeComponent implements OnInit {
     this.selectedReviews = this.reviewItems.slice(start, end);
   }
 
-//==========================================================================================================================================
+  //==========================================================================================================================================
   getLocationHeading(reviewItem): string {
     if (reviewItem.province === reviewItem.country) { return reviewItem.country }
     else {
@@ -96,8 +114,7 @@ export class HomeComponent implements OnInit {
 
   onBrowseCritic(name: string) {
     console.log('critic/' + name)
-    this.router.
-      navigate(['critic/' + name])
+    this.router.navigate(['critic/' + name])
   }
 
   getMaxPages(): number {
