@@ -41,12 +41,10 @@ export class DataService {
   searchReviews(searchTerm: string) {
     this.http.get<ReviewItem[]>(`http://localhost:3000/search/${searchTerm}`, { responseType: 'json' }).subscribe(
       (reviews: ReviewItem[]) => {
-        console.log("sending out sub")
-        console.log(reviews)
         this.reviewSubject.next({
-          searchTerm: searchTerm,
           reviews: reviews,
-        })
+          searchTerm: searchTerm
+        });
       }
     )
   }
