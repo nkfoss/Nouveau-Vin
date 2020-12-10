@@ -1,26 +1,16 @@
-// Default imports
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var helmet = require('helmet');
+
 // ===================================================
-// Tutorial imports: https://morioh.com/p/33d0377536a6
+
 cors = require('cors')
-// http = require('http')
-// path = require('path')
-// server = require('http').Server(app)
-// app.use(bodyParser())  This has been replaced with app.use(express.json())
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(helmet());
 app.use(cors());
@@ -28,7 +18,6 @@ app.use(logger('dev'));
 app.use(express.json());  
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -37,6 +26,18 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// Allow any method from any host and log requests
+app.use((req,res,next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Acces-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE');
+  if('OPTIONS' === req.method) { res.sendStatus(200); }
+  else { 
+    console.log(`${req.ip} ${req.method} ${req.url}`);
+    next();
+  }
+})
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -49,4 +50,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+app.listen(3000, '157.230.187.127', function() {
+  console.log("Listening on port 3000...")
+})
+
+
+
+// module.exports = app;
