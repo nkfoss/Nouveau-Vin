@@ -17,7 +17,7 @@
 		</div>
 		<div class="row cardList">
 			<div *ngFor="let reviewItem of selectedReviews; index as i" class="card" style="width: 18rem;">
-				<h5 class="card-header" (click)="onChooseCriteria(i)">
+				<h5 class="card-header">
 					<span class="points" title="{{reviewItem.points}} / 100 points">{{ reviewItem.points }}</span>
 					{{ reviewItem.title }}
 					<div>
