@@ -1,6 +1,0 @@
-<div *ngFor="let country of countries; index as i" class="card" style="width: 18rem;">
-	<div class="card-body">
-		<h5 class="card-title countryName" (click)="onChooseCountry(i)">{{ country.country }}</h5>
-		<h6 class="card-subtitle mb-2 text-muted">Wines: {{ country.numReviews }}</h6>
-	</div>
-</div>
