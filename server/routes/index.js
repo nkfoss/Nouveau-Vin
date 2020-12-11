@@ -11,6 +11,7 @@ const joinedTables =
 router.get('/countReviews', function (req, res, next) {
   let query = 'SELECT count(*) AS count FROM winereviews';
   mysqlDb.query(query, [], (error, results) => {
+
     if (error) { console.log(error); res.send(error); }
     else {
       let numRows = results[0].count;
