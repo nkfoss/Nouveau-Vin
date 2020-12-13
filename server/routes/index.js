@@ -9,7 +9,7 @@ const joinedTables =
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
 router.get('/countReviews', function (req, res, next) {
-  let query = 'SELECT count(*) AS count FROM winereviews';
+  let query = 'SELECT count(*) AS count FROM wineReviews';
   mysqlDb.query(query, [], (error, results) => {
 
     if (error) { console.log(error); res.send(error); }
