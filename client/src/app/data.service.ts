@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { ErrorHandlerService } from './error.service';
 import { BrowseItem } from './shared/browseitem.model';
 import { ReviewItem } from './shared/reviewitem.model';
@@ -11,35 +12,37 @@ import { ReviewItem } from './shared/reviewitem.model';
 
 export class DataService {
 
+  apiUrl: string = environment.apiUrl;
+
   reviewSubject = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" })
-  }
+  // httpOptions: { headers: HttpHeaders } = {
+  //   headers: new HttpHeaders({ "Content-Type": "application/json" })
+  // }
 
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http
-      .get<BrowseItem[]>(`http://localhost:3000/${browsingCriteria}`, { responseType: "json" })
+      .get<BrowseItem[]>(`${this.apiUrl}/${browsingCriteria}`, { responseType: "json" })
   }
 
   fetchReviewItems(browsingCriteria: string, selectedCritera: string): Observable<any> {
     return this.http
-      .get(`http://localhost:3000/${browsingCriteria}/${selectedCritera}`, { responseType: 'json' })
+      .get(`${this.apiUrl}/${browsingCriteria}/${selectedCritera}`, { responseType: 'json' })
   }
 
   fetchAllVarieties(): Observable<BrowseItem[]> {
     return this.http
-      .get<BrowseItem[]>(`http://localhost:3000/variety/all`, { responseType: 'json' })
+      .get<BrowseItem[]>(`${this.apiUrl}/variety/all`, { responseType: 'json' })
   }
 
   fetchRandoms(): Observable<any> {
-    return this.http.get(`http://localhost:3000/countReviews`, { responseType: 'json' })
+    return this.http.get(`${this.apiUrl}/countReviews`, { responseType: 'json' })
   }
 
   searchReviews(searchTerm: string) {
-    this.http.get<ReviewItem[]>(`http://localhost:3000/search/${searchTerm}`, { responseType: 'json' }).subscribe(
+    this.http.get<ReviewItem[]>(`${this.apiUrl}/search/${searchTerm}`, { responseType: 'json' }).subscribe(
       (reviews: ReviewItem[]) => {
         this.reviewSubject.next({
           reviews: reviews,
