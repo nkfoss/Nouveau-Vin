@@ -8,7 +8,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "build")))
-app.set('trust proxy', true);
 
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');  // Incoming requests can come from '*' aka ANYWHERE
@@ -18,8 +17,9 @@ app.use((req, res, next) => {
 })
 
 app.use((req, res, next) => {
-	let query = `INSERT INTO requests values (?, NOW(6), ?)`;
-	mysqlDb.query(query, [req.ip, req.url], (error, results) => {
+	const ip = req.headers['x-forwared-for'] || req.connection.remoteAddress;
+	const query = `INSERT INTO requests values (?, NOW(6), ?)`;
+	mysqlDb.query(query, [ip, req.url], (error, results) => {
 		if (error) { res.send(error); }
 		else { next(); }
 	})
