@@ -21,23 +21,26 @@ Nouveau Wine is the realization of our old project's potential. It is rebuilt wi
 - Node 15.2
 - MariaDB 10.5
 
-## Setup
+## Setting Up the Database
+In this section, I am assuming couple things before proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
 
-### Setting Up the Database
-In this section, I am assuming that you have a functional setup of MariaDB and the appropriate privileges. There are a couple things we need to do with the database before we can get started. First, we will need to create the appropriate table into which we will upload our data. Second, in order to make our queries faster, we will need to create some accessory tables and reformat the first table. Third, we will create the credentials file so Node can access our database.
+There are a couple things we need to do with the database before we can get started. First, we will need to create the appropriate table into which we will upload our data. Next, in order to make our queries faster, we will need to create some accessory tables and reformat the first table. TFinally, we will create the credentials file so Node can access our database.
 
-#### Uploading the Data
+### Uploading the Data
 In order to upload our data, we need a table into which we load it. The 'wineReviews' table will be our table. (NOTE: Feel free to name any table as you like, but be aware that you must change the query statements in the 'controller.js' file  to reflect your changes.) 
 
 ```SQL
 CREATE TABLE wineReviews (
-	id int, country tinytext, description text, designation tinytext, points smallint unsigned, price tinytext,
+	id integer unsigned not null auto_increment primary key, 
+	country tinytext, description text, designation tinytext, points smallint unsigned, price tinytext,
 	province tinytext, region_1 tinytext, region_2 tinytext, taster_name tinytext, taster_twitter tinytext, 
   title text, variety tinytext, winery tinytext);
 ```
-You may have noticed that the price column is not defined as an integer, but as text. This is because some reviews do not have a price, so they are treated as empty strings. Since we cannot import empty strings into an integer column, we will instead import numbers (and empty string) into a text column. Later on, this can be easily converted to a numeric data type. 
+You may have noticed that the price column is not defined as an integer, but as text. This is because some reviews do not have a price, so they are treated as empty strings. Since we cannot import empty strings into an integer column, we will instead import numbers (and empty string) into a text column. Later on, this can be easily converted to a numeric data type. Now we can deal with the wine-review data. 
 
-Now we can deal with the wine-review data. The dataset can be downloaded from Kaggle [here](https://www.kaggle.com/zynicide/wine-reviews?select=winemag-data-130k-v2.csv). Be sure to download the version 2 csv file (not the json or version 1 csv). Place the file in your database's working directory (on my Windows machine, this is in Program Files/MariaDB 10.5/data/<database_name>. Ensure that your file is encoded with UTF-8. If you open the file with notepad and 'save as', there should be options for saving with a given encoding. The detected encoding will be selected as default. Now the data can be loaded into the table.
+**The dataset can be downloaded from Kaggle [here](https://www.kaggle.com/zynicide/wine-reviews?select=winemag-data-130k-v2.csv).**
+
+Be sure to download the version 2 csv file (not the json or version 1 csv). Place the file in your database's working directory (on my Windows machine, this is in Program Files/MariaDB 10.5/data/<database_name> ). Ensure that your file is encoded with UTF-8. If you open the file with notepad and 'save as', there should be options for saving with a given encoding. The detected encoding will be selected as default. Now the data can be loaded into the table.
 
 ```SQL
 LOAD DATA INFILE 'wineData.csv' 
@@ -56,10 +59,49 @@ Let's break this statement down:
 - **OPTIONALLY ENCLOSED BY '"'** ... Sometimes we get text values that INCLUDE commas. Since we don't want these commas to terminated our value prematurely, we indicate that if a comma is enclosed inside of double-quotes, we can ignore it.
 - **LINES TERMINATED BY '\n';** ... Each line represents a row in the table.
 
-With our dataset uploaded to the database, we are ready to create the accessory tables.
+With our dataset uploaded to the database, there's one more thing we need to do with this table. The 'title' field contains information that is sometimes redundant (it is contained in the province field). We are going to overwrite those values using some Regex magic...
 
-#### Acessory Tables
+```SQL
+UPDATE winereviews SET title = REGEXP_SUBSTR(title, '^[^(]* ');
+```
 
-### Launch
+Now we can move on to the other tables.
+
+### Accessory Tables
+
+When browsing wine reviews, you can choose to browse by categories. Some of these categories are country, variety, and critic (columns from the table we just made). For browsing we do not hardcode all possible options for each category, but instead query the database for our options. We can get all of those options (and the counts of those options) from the table, but that would take a long time. Instead, we will create a table for each browsing criteria, the number of records corresponding to them. Then we will fill the table with data from the large table.
+
+```SQL
+CREATE TABLE varieties (
+	id integer unsigned not null auto_increment primary key,
+	variety text,
+	numreviews integer unsigned);
+	
+INSERT INTO varieties (variety, numreviews) (SELECT variety, COUNT(*) FROM winereviews GROUP BY variety);
+```
+
+This should be done with the remaining browsing criteria. Then we will replace the now-defunct columns in the big table with foreign keys pointing to the old values.
+
+```SQL
+ALTER TABLE winereviews ADD COLUMN (fkVariety integer unsigned not null);
+UPDATE winereviews AS w JOIN varieties AS v ON w.variety = v.variety SET w.fkVariety = v.id;
+ALTER TABLE winereviews DROP COLUMN variety;
+```
+
+### Database Credentials
+
+We need to add a JSON file to our 'db' folder (inside the 'server' folder of the repo). This will contain the information we need to access the database with Express. Use this form:
+
+```
+{
+	"connectionLimit": 10,  // This will depend on your setup. 
+	"host": "localhost",
+	"user": <your_username_here>,
+	"password": <your_password_here>,
+	"database": <your_database_here>
+}
+```
+
+## Launch
 Mentioned earlier, the Angular app is rendered through Express. If you're familiar with the Angular CLI then you may have used 'ng serve' to access your application on local host (port 4200). That application may have accessed a backend via some other port. In this project, you will not use 'ng serve' to access the app. Instead, you must use 'ng build' and then run the Express server (server.js) to render the app. To use the app, you will go through local host (port 3000). Express will then either forward appropriate requests to the Angular router, or handle requests to the database.
 
