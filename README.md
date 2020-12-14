@@ -22,7 +22,8 @@ Nouveau Wine is the realization of our old project's potential. It is rebuilt wi
 - MariaDB 10.5
 
 ## Setting Up the Database
-In this section, I am assuming couple things before proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
+In this section, I am assuming couple things be
+proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
 
 There are a couple things we need to do with the database before we can get started. First, we will need to create the appropriate table into which we will upload our data. Next, in order to make our queries faster, we will need to create some accessory tables and reformat the first table. TFinally, we will create the credentials file so Node can access our database.
 
@@ -80,7 +81,7 @@ CREATE TABLE varieties (
 INSERT INTO varieties (variety, numreviews) (SELECT variety, COUNT(*) FROM winereviews GROUP BY variety);
 ```
 
-This should be done with the remaining browsing criteria. Then we will replace the now-defunct columns in the big table with foreign keys pointing to the old values.
+This should be done with the remaining browsing criteria. Then we will replace the now-defunct columns in the big table with new id's pointing to the old values.
 
 ```SQL
 ALTER TABLE winereviews ADD COLUMN (fkVariety integer unsigned not null);
