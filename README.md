@@ -1,4 +1,4 @@
-either # Nouveau Vin
+# Nouveau Vin
 
 Nouveau Vin is an Angular application for browsing professional wine reviews. The back end is comprised of an Express/Node server and MariaDB (MySQL).
 
@@ -9,7 +9,9 @@ Nouveau Vin is an Angular application for browsing professional wine reviews. Th
 
 ## Introduction
 
-Hence my use of the word 'nouveau' (French for 'newly arrived or developed'). Relearning MariaDB was part of recreating the 'old' wine reviews project (it had been over a year since I'd worked with it). I also wanted to try creating another Angular project from scratch with the new things I've learned. However, I also used this project to learn new technologies. The old project did use Express as a backend, but my exposure to it was minimal. My development of the Express server on this project was completely independent of the old project and is the base demonstration of how I understand Express. In addition, I deployed Nouveau Vin on a DigitalOcean droplet (virtual machine) using Nginx as a reverse proxy. This deplyment is currently hosted alongside my portfolio on my personal website (nathankfoss.me) .
+This project was inspired by a similar group project created in Spring 2019. The old project was also an application for browsing wine reviews. It used AngularJS, an earlier version of Express/Node, and MariaDB. It provided some basic querying functionality, with unoptimized sorting and searching, as well as a skeleton for browsing by a single feature. No more functionality was developed after the spring term. 
+
+Nouveau Wine is the realization of our old project's potential. It is rebuilt with newer technology and refined with a deeper understanding of the old (hence my use of the word 'nouveau' - French for 'newly arrived or developed'). Relearning MariaDB was part of recreating the 'old' wine reviews project (it had been over a year since I'd worked with it). I also wanted to try creating another Angular project from scratch with the new things I've learned. However, I also used this project to learn new technologies. The old project did use Express as a backend, but my exposure to it was minimal. My development of the Express server on this project was completely independent of the old project and is the base demonstration of how I understand Express. In addition, I deployed Nouveau Vin on a DigitalOcean droplet (virtual machine) using Nginx as a reverse proxy. This deplyment is currently hosted alongside my portfolio on my personal website (nathankfoss.me) .
 
 ## Technologies
 
