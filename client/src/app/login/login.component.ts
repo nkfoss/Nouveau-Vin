@@ -18,13 +18,14 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.errorMessage = '';
     this.dataService.login(this.username, this.password).subscribe(
       (results: any) => {
         console.log('response arrived')
       },
-      (error: Error) => {
+      (error: any) => {
         console.log(error);
-        this.errorMessage = error.error.message;
+        this.errorMessage = error.error;
       }
     )
   }
