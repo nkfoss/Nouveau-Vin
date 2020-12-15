@@ -5,7 +5,7 @@ Nouveau Vin is an Angular application for browsing professional wine reviews. Th
 ## Table of Contents
 + [Introduction](#introduction)
 + [Technologies](#technologies)
-+ [Database Setup](#datebase-setup)
++ [Database Setup](#database-setup)
 + [Launch](#launch)
 
 ## Introduction
