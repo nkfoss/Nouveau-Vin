@@ -5,7 +5,8 @@ Nouveau Vin is an Angular application for browsing professional wine reviews. Th
 ## Table of Contents
 + [Introduction](#introduction)
 + [Technologies](#technologies)
-+ [Setup](#setup)
++ [Database Setup](#datebase-Setup)
++ [Launch](#launch)
 
 ## Introduction
 
@@ -21,7 +22,7 @@ Nouveau Wine is the realization of our old project's potential. It is rebuilt wi
 - Node 15.2
 - MariaDB 10.5
 
-## Setting Up the Database
+## Database Setup
 In this section, I am assuming couple things be
 proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
 
@@ -104,5 +105,5 @@ We need to add a JSON file to our 'db' folder (inside the 'server' folder of the
 ```
 
 ## Launch
-Mentioned earlier, the Angular app is rendered through Express. If you're familiar with the Angular CLI then you may have used 'ng serve' to access your application on local host (port 4200). That application may have accessed a backend via some other port. In this project, you will not use 'ng serve' to access the app. Instead, you must use 'ng build' and then run the Express server (server.js) to render the app. To use the app, you will go through local host (port 3000). Express will then either forward appropriate requests to the Angular router, or handle requests to the database.
+Mentioned earlier, the Angular app is rendered through Express. If you're familiar with the Angular CLI then you may have used 'ng serve' to access your application on local host (port 4200). That application may have accessed a backend via some other port. In this project, you will not use 'ng serve' to access the app. Instead you must build the app and run the Express server to render it. To use the app, you will go through local host (port 3000). Express will then either forward appropriate requests to the Angular router, or handle requests to the database.
 
