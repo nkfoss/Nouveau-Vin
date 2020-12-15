@@ -13,14 +13,20 @@ import { ReviewItem } from './shared/reviewitem.model';
 export class DataService {
 
   apiUrl: string = environment.apiUrl;
-
   reviewSubject = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
-  // httpOptions: { headers: HttpHeaders } = {
-  //   headers: new HttpHeaders({ "Content-Type": "application/json" })
-  // }
+  login(username: string, password: string) {
+    return this.http
+      .post(`${this.apiUrl}/login`,
+        {
+          username: username,
+          password: password
+        },
+        { responseType: 'json' }
+      )
+  }
 
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http

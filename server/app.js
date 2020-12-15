@@ -7,6 +7,13 @@ const mysqlDb = require('./db/mysqlConn');
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/robots.txt', function (req, res) {
+	console.log('hit')
+	res.type('text/plain');
+	res.sendFile(path.join(__dirname, "robots.txt"))
+});
+
 app.use("/", express.static(path.join(__dirname, "build")))
 
 app.use((req, res, next) => {
@@ -16,6 +23,7 @@ app.use((req, res, next) => {
 	next();
 })
 
+// Record the ip/timestamp of all requests
 app.use((req, res, next) => {
 	const ip = req.headers['x-forwared-for'] || req.connection.remoteAddress;
 	const query = `INSERT INTO requests values (?, NOW(6), ?)`;
