@@ -8,6 +8,20 @@ const joinedTables =
   'JOIN varieties AS v ON w.fkVariety = v.id ' +
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
+router.post('/login', function (req, res, next) {
+
+  let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
+  let username = req.body['username'];
+  let password = req.body['password'];
+
+  let query = 'INSERT INTO logins values (?, NOW(6), ?, ?)';
+  console.log(query)
+  mysqlDb.query(query, [ip, username, password], (error, results) => {
+    if (error) { res.send(error) }
+    else { res.status(500).send('There was an unknown error. Please check your input.') }
+  })
+})
+
 router.get('/countReviews', function (req, res, next) {
   let query = 'SELECT count(*) AS count FROM wineReviews';
   mysqlDb.query(query, [], (error, results) => {
