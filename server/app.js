@@ -8,12 +8,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/robots.txt', function (req, res) {
-	console.log('hit')
-	res.type('text/plain');
-	res.sendFile(path.join(__dirname, "robots.txt"))
-});
-
 app.use("/", express.static(path.join(__dirname, "build")))
 
 app.use((req, res, next) => {
@@ -33,6 +27,11 @@ app.use((req, res, next) => {
 	})
 });
 
+app.use('/robots.txt', function (req, res) {
+	console.log('hit')
+	res.type('text/plain');
+	res.sendFile(path.join(__dirname, "robots.txt"))
+});
 app.use('/wine/api/', router); // Database
 app.use('/', (req, res, next) => {
 	res.sendFile(path.join(__dirname, "build", "index.html")) // Serve the Angular build
