@@ -22,7 +22,7 @@ Nouveau Wine is the realization of our old project's potential. It is rebuilt wi
 - Node 15.2
 - MariaDB 10.5
 
-## Database setup
+## Database Setup
 In this section, I am assuming couple things be
 proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
 
