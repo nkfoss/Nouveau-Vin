@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { DataService } from '../data.service';
 })
 
 //=============================================================================================================
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   loadingStatus: string = 'Loading...';
 
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit {
   subheading: string = "Simply the best.";
   location: string;
   page: number;
+
+  searchSub: Subscription;
   //==============================================================================================================
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
@@ -40,7 +43,7 @@ export class HomeComponent implements OnInit {
         this.heading = searchTerm;
         this.dataService.searchReviews(searchTerm);
       }
-      else {  // Variety/country/taster category
+      else {  // Variety or country or taster category
         this.browsingCriteria = params['browsingCriteria'];
         this.chosenCriteria = params['chosenCriteria'];
         this.setHeadings();
@@ -64,7 +67,7 @@ export class HomeComponent implements OnInit {
   }
 
   private setupSearchSub() {
-    this.dataService.reviewSubject.subscribe(
+    this.searchSub = this.dataService.reviewSubject.subscribe(
       (data) => {
         this.subheading = "Showing results for: '" + data.searchTerm + "'";
         if (data.reviews.length > 0) {
@@ -92,6 +95,10 @@ export class HomeComponent implements OnInit {
     let start = (page - 1) * 18;
     let end = (page * 18);
     this.selectedReviews = this.reviewItems.slice(start, end);
+  }
+
+  ngOnDestroy() {
+    if (this.searchSub) { this.searchSub.unsubscribe() }
   }
 
   //==========================================================================================================================================

@@ -9,15 +9,16 @@ const joinedTables =
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
 router.get('/countReviews', function (req, res, next) {
-  let query = 'SELECT count(*) AS count FROM winereviews';
+  let query = 'SELECT count(*) AS count FROM wineReviews';
   mysqlDb.query(query, [], (error, results) => {
-    if (error) { console.log(error); res.send(error); }
+
+    if (error) { res.send(error); }
     else {
       let numRows = results[0].count;
       query = getRandomsQuery(numRows);
       mysqlDb.query(query, [], (error, results) => {
-        if (error) { console.log(error); res.send(error); }
-        else { console.log(results); res.send(results); }
+        if (error) { res.send(error); }
+        else { res.send(results); }
       })
     }
   })
@@ -34,7 +35,6 @@ function getRandomsQuery(numRows) {
   }
   idList = idList.replace(/,[ ]$/, ')')
   let query = joinedTables + 'WHERE w.id IN ' + idList;
-  console.log(query);
   return query;
 }
 
@@ -46,8 +46,8 @@ router.get('/search/:searchTerm', function (req, res, next) {
     't.taster_twitter LIKE ?';
     paramsArray = createParamsArray(req.params.searchTerm);
     mysqlDb.query(query, paramsArray, (error, results) => {
-      if (error) { console.log(error); res.send(error); }
-      else { console.log(results); res.send(results); }
+      if (error) { res.send(error); }
+      else { res.send(results); }
     });
 })
 
@@ -64,7 +64,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
   else if (req.params.browsingCriteria === "critic") { query = 'SELECT taster_name AS value, numReviews FROM tasters'; }
 
   mysqlDb.query(query, [], (error, results) => {
-    if (error) { console.log(error); res.send(error); }
+    if (error) { res.send(error); }
     else { res.send(results); }
   })
 });
@@ -72,7 +72,7 @@ router.get('/:browsingCriteria', function (req, res, next) {
 router.get('/variety/all', function (req, res, next) {
   let query = "SELECT variety as value FROM varieties"
   mysqlDb.query(query, [], (error, results) => {
-    if (error) { console.log(error); res.send(error); }
+    if (error) { res.send(error); }
     else { res.send(results); }
   })
 })
@@ -84,7 +84,7 @@ router.get('/:browsingCriteria/:selectedCriteria', function (req, res, next) {
   else if (req.params.browsingCriteria === 'critic') { query = joinedTables + 'WHERE t.taster_name = ?'; }
 
   mysqlDb.query(query, [req.params.selectedCriteria], (error, results) => {
-    if (error) { console.log(error); res.send(error); }
+    if (error) { res.send(error); }
     else { res.send(results); }
   })
 })
