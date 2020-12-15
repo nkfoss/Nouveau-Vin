@@ -5,7 +5,7 @@ Nouveau Vin is an Angular application for browsing professional wine reviews. Th
 ## Table of Contents
 + [Introduction](#introduction)
 + [Technologies](#technologies)
-+ [Database Setup](#datebase-Setup)
++ [Database Setup](#datebase-setup)
 + [Launch](#launch)
 
 ## Introduction
@@ -22,13 +22,13 @@ Nouveau Wine is the realization of our old project's potential. It is rebuilt wi
 - Node 15.2
 - MariaDB 10.5
 
-## Database Setup
+## Database setup
 In this section, I am assuming couple things be
 proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console. In the case that you are using a GUI, you should still be able to follow along fine. 
 
 There are a couple things we need to do with the database before we can get started. First, we will need to create the appropriate table into which we will upload our data. Next, in order to make our queries faster, we will need to create some accessory tables and reformat the first table. TFinally, we will create the credentials file so Node can access our database.
 
-### Uploading the Data
+### Uploading the data
 In order to upload our data, we need a table into which we load it. The 'wineReviews' table will be our table. (NOTE: Feel free to name any table as you like, but be aware that you must change the query statements in the 'controller.js' file  to reflect your changes.) 
 
 ```SQL
@@ -69,7 +69,7 @@ UPDATE winereviews SET title = REGEXP_SUBSTR(title, '^[^(]* ');
 
 Now we can move on to the other tables.
 
-### Accessory Tables
+### Accessory tables
 
 When browsing wine reviews, you can choose to browse by categories. Some of these categories are country, variety, and critic (columns from the table we just made). For browsing we do not hardcode all possible options for each category, but instead query the database for our options. We can get all of those options (and the counts of those options) from the table, but that would take a long time. Instead, we will create a table for each browsing criteria, the number of records corresponding to them. Then we will fill the table with data from the large table.
 
@@ -90,7 +90,7 @@ UPDATE winereviews AS w JOIN varieties AS v ON w.variety = v.variety SET w.fkVar
 ALTER TABLE winereviews DROP COLUMN variety;
 ```
 
-### Database Credentials
+### Database credentials
 
 We need to add a JSON file to our 'db' folder (inside the 'server' folder of the repo). This will contain the information we need to access the database with Express. Use this form:
 
