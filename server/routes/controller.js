@@ -93,9 +93,9 @@ router.get('/variety/all', function (req, res, next) {
 
 router.get('/:browsingCriteria/:selectedCriteria', function (req, res, next) {
   let query = '';
-  if (req.params.browsingCriteria === 'country') { query = joinedTables + 'WHERE c.country = ?'; }
-  else if (req.params.browsingCriteria === 'variety') { query = joinedTables + 'WHERE v.variety = ?'; }
-  else if (req.params.browsingCriteria === 'critic') { query = joinedTables + 'WHERE t.taster_name = ?'; }
+  if (req.params.browsingCriteria === 'countries') { query = joinedTables + 'WHERE c.country = ?'; }
+  else if (req.params.browsingCriteria === 'varieties') { query = joinedTables + 'WHERE v.variety = ?'; }
+  else if (req.params.browsingCriteria === 'critics') { query = joinedTables + 'WHERE t.taster_name = ?'; }
 
   mysqlDb.query(query, [req.params.selectedCriteria], (error, results) => {
     if (error) { res.send(error); }
