@@ -10,6 +10,7 @@ import { ReviewListComponent } from './review-list/review-list.component';
 import { ReviewItemComponent } from './review-list/review-item/review-item.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LoginComponent } from './login/login.component';
     ReviewListComponent,
     ReviewItemComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
