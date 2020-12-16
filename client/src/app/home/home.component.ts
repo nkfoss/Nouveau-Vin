@@ -20,8 +20,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   reviewItems = [];
   selectedReviews = [];
 
-  heading: string = "Bootleg Wine Reviews";
-  subheading: string = "Simply the best.";
+  heading: string = "Nouveau Wine Reviews";
+  subheading: string = "Browse professional wine reviews.";
   location: string;
   page: number;
 
