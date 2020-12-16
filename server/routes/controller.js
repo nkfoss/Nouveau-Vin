@@ -73,9 +73,9 @@ function createParamsArray(param) {
 
 router.get('/:browsingCriteria', function (req, res, next) {
   let query = '';
-  if (req.params.browsingCriteria === "country") { query = 'SELECT country AS value, numReviews FROM countries'; }
-  else if (req.params.browsingCriteria === "variety") { query = `SELECT variety AS value, numReviews FROM varieties WHERE numReviews > 1000 ORDER BY value`; }
-  else if (req.params.browsingCriteria === "critic") { query = 'SELECT taster_name AS value, numReviews FROM tasters'; }
+  if (req.params.browsingCriteria === "countries") { query = 'SELECT country AS value, numReviews FROM countries'; }
+  else if (req.params.browsingCriteria === "varieties") { query = `SELECT variety AS value, numReviews FROM varieties WHERE numReviews > 1000 ORDER BY value`; }
+  else if (req.params.browsingCriteria === "critics") { query = 'SELECT taster_name AS value, numReviews FROM tasters'; }
 
   mysqlDb.query(query, [], (error, results) => {
     if (error) { res.send(error); }
