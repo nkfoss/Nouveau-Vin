@@ -42,8 +42,4 @@ export class NavbarComponent implements OnInit{
     this.router.navigate([`/search/${this.searchTerm}`])
   }
 
-  qwe() {
-    this.dataService.qwe();
-  }
-
 }
