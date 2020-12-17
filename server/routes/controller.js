@@ -8,6 +8,25 @@ const joinedTables =
   'JOIN varieties AS v ON w.fkVariety = v.id ' +
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
+router.get('/reviews', function(req,res,next) {
+  let bc = req.query['browsingCriteria'];
+  let sc = req.query['selectedCriteria'];
+  let page = req.query['page'];
+
+  let query = "SELECT * FROM " + joinedTables;
+  if      (bc === 'countries') { query += 'WHERE c.country = ? '; }
+  else if (bc === 'varieties') { query += 'WHERE v.variety = ? '; }
+  else if (bc === 'critics')   { query += 'WHERE t.taster_name = ? '; }
+
+  let offset = (page - 1) * 18;
+  query += `LIMIT 18 OFFSET ${offset} `
+  
+  mysqlDb.query(query, [sc], (error, results) => {
+    if (error) { res.send(error); }
+    else { res.send(results); }
+  })
+})
+
 router.get('/count', function(req,res,next) {
   let bc = req.query['browsingCriteria'];
   let sc = req.query['selectedCriteria'];
@@ -23,6 +42,7 @@ router.get('/count', function(req,res,next) {
     else { res.send(results); }
   })
 })
+
 
 router.post('/login', function (req, res, next) {
   let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
@@ -101,18 +121,6 @@ router.get('/:browsingCriteria', function (req, res, next) {
 router.get('/variety/all', function (req, res, next) {
   let query = "SELECT variety as value FROM varieties"
   mysqlDb.query(query, [], (error, results) => {
-    if (error) { res.send(error); }
-    else { res.send(results); }
-  })
-})
-
-router.get('/:browsingCriteria/:selectedCriteria', function (req, res, next) {
-  let query = '';
-  if (req.params.browsingCriteria === 'countries') { query = joinedTables + 'WHERE c.country = ?'; }
-  else if (req.params.browsingCriteria === 'varieties') { query = joinedTables + 'WHERE v.variety = ?'; }
-  else if (req.params.browsingCriteria === 'critics') { query = joinedTables + 'WHERE t.taster_name = ?'; }
-
-  mysqlDb.query(query, [req.params.selectedCriteria], (error, results) => {
     if (error) { res.send(error); }
     else { res.send(results); }
   })
