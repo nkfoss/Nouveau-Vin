@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // Incoming requests can have these headers
 	res.setHeader('Acces-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE');
 	next();
-})
+});
 
 // Record the ip/timestamp of all requests
 app.use((req, res, next) => {
@@ -32,10 +32,16 @@ app.use('/robots.txt', function (req, res) {
 	res.type('text/plain');
 	res.sendFile(path.join(__dirname, "robots.txt"))
 });
+
+app.use('/portfolio', (req,res,next) => {
+	res.sendFile(path.join(__dirname, "portfolio", "index.html"))
+})
+
 app.use('/wine/api/', router); // Database
 app.use('/', (req, res, next) => {
 	res.sendFile(path.join(__dirname, "build", "index.html")) // Serve the Angular build
 });
+
 
 
 
