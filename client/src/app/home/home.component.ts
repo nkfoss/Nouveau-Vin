@@ -27,11 +27,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   maxPages: number;
 
   searchSub: Subscription;
+  qweSub: Subscription;
   //==============================================================================================================
   constructor(private activatedRoute: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
     this.setupSearchSub();
+    this.setupQweSub();
     this.activatedRoute.params.subscribe((params: Params) => { this.handleNewParams(params) })
   }
 
@@ -48,14 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.browsingCriteria = params['browsingCriteria'];
         this.chosenCriteria = params['chosenCriteria'];
         this.setHeadings();
-        this.dataService.fetchReviewItems(this.browsingCriteria, this.chosenCriteria).subscribe(
-          (reviews: any) => {
-            this.reviewItems = reviews;
-            this.page = 1;
-            this.selectReviews(this.page);
-          },
-          (error) => { console.log(error) }
-        )
+        this.dataService.qwe(this.browsingCriteria, this.chosenCriteria)
       }
     }
     // In this case, we were just loading the homepage with random reviews
@@ -65,6 +60,16 @@ export class HomeComponent implements OnInit, OnDestroy {
         (error) => { console.log(error) }
       );
     }
+  }
+
+  private setupQweSub() {
+    this.searchSub = this.dataService.qweSub.subscribe(
+      (data) => {
+        if (data.currPage) {this.currPage = data.currPage;}
+        if (data.maxPages) {this.maxPages = data.maxPages;}
+        if (data.selectedReviews) {this.selectedReviews = data.selectedReviews}
+      }
+    )
   }
 
   private setupSearchSub() {
@@ -125,7 +130,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['critic/' + name])
   }
 
-  }
 
   previousClass(): string {
     if (this.currPage > 1) { return "page-item" }
