@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 
 @Component({
@@ -9,11 +10,18 @@ import { DataService } from '../data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
 
   searchTerm: string = '';
+  qweSub: Subscription;
 
   constructor(private dataService: DataService, private router: Router) { }
+
+  ngOnInit() {
+    this.qweSub = this.dataService.qweSub.subscribe(
+      (data) => {console.log(data)}
+    )
+  }
 
   /**
    * Navigating will create the Review-List component. During init, this component will ask the Data Service for an array of objects matching the browsing criteria.
@@ -32,6 +40,10 @@ export class NavbarComponent {
 
   onSearch() {
     this.router.navigate([`/search/${this.searchTerm}`])
+  }
+
+  qwe() {
+    this.dataService.qwe();
   }
 
 }
