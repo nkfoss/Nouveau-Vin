@@ -12,6 +12,7 @@ import { ReviewItem } from './shared/reviewitem.model';
 
 export class DataService {
 
+  maxPages;
   apiUrl: string = environment.apiUrl;
   reviewSubject = new Subject<any>();
 
@@ -60,33 +61,30 @@ export class DataService {
 
   qweSub = new Subject<any>()
 
-  qwe() {
-    let bc = 'countries';
-    let sc = 'armenia';
-    this.http.get(`${this.apiUrl}/count?browsingCriteria=${bc}&selectedCriteria=${sc}`, { responseType: 'json'}).subscribe(
+  qwe(browsingCriteria: string, selectedCriteria: string) {
+    this.http.get(`${this.apiUrl}/count?browsingCriteria=${browsingCriteria}&selectedCriteria=${selectedCriteria}`, { responseType: 'json'}).subscribe(
       (data) => {
-        let count = data[0].count;
-        this.asd(bc, sc, 1).subscribe(
-          (reviews: ReviewItem[]) => {
-            this.qweSub.next({
-              currPage: 1,
-              maxPage: this.getMaxPages(count),
-              selectReviews: reviews
-            });
-          }
-        );
+        this.maxPages = this.getMaxPages(data[0].count);
+        this.getReviewsPage(browsingCriteria, selectedCriteria, 1);
       }
     );
   }
 
-  asd(browsingCriteria: string, chosenCriteria: string, page: number) {
-    return this.http.get(`${this.apiUrl}/reviews?browsingCriteria=${browsingCriteria}&selectedCriteria=${chosenCriteria}&page=${page}`)
+  getReviewsPage(browsingCriteria: string, chosenCriteria: string, targetPage: number) {
+    this.http.get(`${this.apiUrl}/reviews?browsingCriteria=${browsingCriteria}&selectedCriteria=${chosenCriteria}&page=${targetPage}`).subscribe(
+      (reviews: ReviewItem[]) => {
+        console.log('sending out sub')
+        this.qweSub.next({
+          currPage: targetPage,
+          maxPages: this.maxPages,
+          selectedReviews: reviews
+        });
+      }
+    )
   }
 
   getMaxPages(count: number): number {
     return Math.ceil(count / 18)
   }
-
-
 
 }
