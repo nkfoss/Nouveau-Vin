@@ -12,7 +12,7 @@ import { ReviewItem } from './shared/reviewitem.model';
 
 export class DataService {
 
-  maxPages;
+  maxPages: number;
   apiUrl: string = environment.apiUrl;
   reviewSubject = new Subject<any>();
 

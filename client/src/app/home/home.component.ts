@@ -142,8 +142,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   changePage(change: number) {
-    this.page = this.page + change;
-    this.selectReviews(this.page);
+    this.dataService.getReviewsPage(this.browsingCriteria, this.chosenCriteria, (this.currPage + change))
   }
 }
 
