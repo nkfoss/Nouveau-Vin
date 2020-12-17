@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorHandlerService } from './error.service';
 import { BrowseItem } from './shared/browseitem.model';
@@ -25,7 +25,7 @@ export class DataService {
           password: password
         },
         { responseType: 'json' }
-      )
+      );
   }
 
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
@@ -55,7 +55,38 @@ export class DataService {
           searchTerm: searchTerm
         });
       }
-    )
+    );
   }
+
+  qweSub = new Subject<any>()
+
+  qwe() {
+    let bc = 'countries';
+    let sc = 'armenia';
+    this.http.get(`${this.apiUrl}/count?browsingCriteria=${bc}&selectedCriteria=${sc}`, { responseType: 'json'}).subscribe(
+      (data) => {
+        let count = data[0].count;
+        this.asd(bc, sc, 1).subscribe(
+          (reviews: ReviewItem[]) => {
+            this.qweSub.next({
+              currPage: 1,
+              maxPage: this.getMaxPages(count),
+              selectReviews: reviews
+            });
+          }
+        );
+      }
+    );
+  }
+
+  asd(browsingCriteria: string, chosenCriteria: string, page: number) {
+    return this.http.get(`${this.apiUrl}/reviews?browsingCriteria=${browsingCriteria}&selectedCriteria=${chosenCriteria}&page=${page}`)
+  }
+
+  getMaxPages(count: number): number {
+    return Math.ceil(count / 18)
+  }
+
+
 
 }
