@@ -8,6 +8,22 @@ const joinedTables =
   'JOIN varieties AS v ON w.fkVariety = v.id ' +
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
+router.get('/count', function(req,res,next) {
+  let bc = req.query['browsingCriteria'];
+  let sc = req.query['selectedCriteria'];
+
+  let query = "SELECT count(*) as count FROM " + joinedTables;
+  if      (bc === 'countries') { query += 'WHERE c.country = ?'; }
+  else if (bc === 'varieties') { query += 'WHERE v.variety = ?'; }
+  else if (bc === 'critics')   { query += 'WHERE t.taster_name = ?'; }
+  console.log("query is " + query)
+
+  mysqlDb.query(query, [sc], (error, results) => {
+    if (error) { res.send(error); }
+    else { res.send(results); }
+  })
+})
+
 router.post('/login', function (req, res, next) {
   let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
   let username = req.body['username'];
