@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   heading: string = "Nouveau Wine Reviews";
   subheading: string = "Browse professional wine reviews.";
   location: string;
-  page: number;
+  currPage: number;
+  maxPages: number;
 
   searchSub: Subscription;
   //==============================================================================================================
@@ -73,7 +74,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (data.reviews.length > 0) {
           console.log(data.reviews)
           this.reviewItems = data.reviews
-          this.page = 1;
+          this.currPage = 1;
           this.selectReviews(1);
         }
         else {
@@ -124,17 +125,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['critic/' + name])
   }
 
-  getMaxPages(): number {
-    return Math.ceil(this.reviewItems.length / 18)
   }
 
   previousClass(): string {
-    if (this.page > 1) { return "page-item" }
+    if (this.currPage > 1) { return "page-item" }
     else { return "page-item disabled" }
   }
 
   nextClass(): string {
-    if (this.page != this.getMaxPages()) { return "page-item" }
+    if (this.currPage != this.maxPages) { return "page-item" }
     else { return "page-item disabled" }
   }
 
