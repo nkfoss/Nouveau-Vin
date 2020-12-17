@@ -3,13 +3,12 @@ var router = express.Router();
 const mysqlDb = require('../db/mysqlConn');
 
 const joinedTables =
-  'SELECT * FROM wineReviews AS w ' +
+  'wineReviews AS w ' +
   'JOIN countries AS c ON w.fkCountry = c.id ' +
   'JOIN varieties AS v ON w.fkVariety = v.id ' +
   'JOIN tasters AS t ON w.fkTaster = t.id ';
 
 router.post('/login', function (req, res, next) {
-
   let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
   let username = req.body['username'];
   let password = req.body['password'];
@@ -39,7 +38,6 @@ router.get('/countReviews', function (req, res, next) {
 })
 
 function getRandomsQuery(numRows) {
-  console.log(numRows);
   let idList = "("; let count = 0;
   while (count < 18) {
     let rand = Math.floor(Math.random() * numRows);
@@ -48,12 +46,13 @@ function getRandomsQuery(numRows) {
     count++;
   }
   idList = idList.replace(/,[ ]$/, ')')
-  let query = joinedTables + 'WHERE w.id IN ' + idList;
+  let query = "SELECT * FROM " + joinedTables + 'WHERE w.id IN ' + idList;
   return query;
 }
 
 router.get('/search/:searchTerm', function (req, res, next) {
-  let query = joinedTables + 'WHERE w.description LIKE ? OR ' +
+  let query = "SELECT * FROM " + 
+    joinedTables + 'WHERE w.description LIKE ? OR ' +
     'w.designation LIKE ? OR ' + 'w.winery LIKE ? OR ' +
     'c.country LIKE ? OR ' + 'w.province LIKE ? OR ' +
     'w.region_1 LIKE ? OR ' + 't.taster_name LIKE ? OR ' +
