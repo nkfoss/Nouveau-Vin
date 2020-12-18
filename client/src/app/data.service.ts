@@ -15,6 +15,7 @@ export class DataService {
   maxPages: number;
   apiUrl: string = environment.apiUrl;
   reviewSubject = new Subject<any>();
+  selectedReviewsSub = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
 
@@ -48,33 +49,42 @@ export class DataService {
     return this.http.get(`${this.apiUrl}/countReviews`, { responseType: 'json' })
   }
 
-  searchReviews(searchTerm: string) {
-    this.http.get<ReviewItem[]>(`${this.apiUrl}/search/${searchTerm}`, { responseType: 'json' }).subscribe(
-      (reviews: ReviewItem[]) => {
-        this.reviewSubject.next({
-          reviews: reviews,
-          searchTerm: searchTerm
-        });
+  countSearchedReviews(searchTerm: string) {
+    this.http.get(`${this.apiUrl}/count?searchTerm=${searchTerm}`, { responseType: 'json' }).subscribe(
+      (data) => {
+        this.maxPages = this.calcMaxPages(data[0].count);
+        this.getSearchedReviews(searchTerm, 1);
       }
     );
   }
 
-  qweSub = new Subject<any>()
+  getSearchedReviews(searchTerm: string, targetPage: number) {
+    this.http.get(`${this.apiUrl}/reviews?searchTerm=${searchTerm}&page=${targetPage}`, { responseType: 'json' }).subscribe(
+      (reviews: ReviewItem[]) => {
+        console.log('sending out sub');
+        this.selectedReviewsSub.next({
+          currPage: targetPage,
+          maxPages: this.maxPages,
+          selectedReviews: reviews,
+          message: `Showing results for: "${searchTerm}" `
+        })
+      }
+    )
+  }
 
-  qwe(browsingCriteria: string, selectedCriteria: string) {
+  countSelectedReviews(browsingCriteria: string, selectedCriteria: string) {
     this.http.get(`${this.apiUrl}/count?browsingCriteria=${browsingCriteria}&selectedCriteria=${selectedCriteria}`, { responseType: 'json'}).subscribe(
       (data) => {
-        this.maxPages = this.getMaxPages(data[0].count);
-        this.getReviewsPage(browsingCriteria, selectedCriteria, 1);
+        this.maxPages = this.calcMaxPages(data[0].count);
+        this.getSelectedReviews(browsingCriteria, selectedCriteria, 1);
       }
     );
   }
 
-  getReviewsPage(browsingCriteria: string, chosenCriteria: string, targetPage: number) {
+  getSelectedReviews(browsingCriteria: string, chosenCriteria: string, targetPage: number) {
     this.http.get(`${this.apiUrl}/reviews?browsingCriteria=${browsingCriteria}&selectedCriteria=${chosenCriteria}&page=${targetPage}`).subscribe(
       (reviews: ReviewItem[]) => {
-        console.log('sending out sub')
-        this.qweSub.next({
+        this.selectedReviewsSub.next({
           currPage: targetPage,
           maxPages: this.maxPages,
           selectedReviews: reviews
@@ -83,7 +93,7 @@ export class DataService {
     )
   }
 
-  getMaxPages(count: number): number {
+  calcMaxPages(count: number): number {
     return Math.ceil(count / 18)
   }
 
