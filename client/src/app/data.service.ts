@@ -12,7 +12,6 @@ import { ReviewItem } from "./shared/reviewitem.model";
 export class DataService {
   maxPages: number;
   apiUrl: string = environment.apiUrl;
-  reviewSubject = new Subject<any>();
   selectedReviewsSub = new Subject<any>();
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
