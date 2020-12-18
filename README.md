@@ -24,7 +24,7 @@ In addition to polishing up previous knowledge, I also used this project to lear
 - Node 15.2
 - MariaDB 10.5
 
-## Hpw to setup database
+## How to setup database
 In this section, I am assuming a couple things before
 proceeding. First, you should have a functional install of MariaDB. Second, you should have a MariaDB user with privileges allowing table creation and modification, as well as file uploading. Third, I assume you ARE NOT using some kind of GUI application and are doing everything in the MariaDB console (in the case that you are using a GUI, you should still be able to follow along fine). 
 
