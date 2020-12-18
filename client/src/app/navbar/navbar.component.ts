@@ -34,6 +34,7 @@ export class NavbarComponent {
 
   onSearch() {
     this.router.navigate([`/search/${this.searchTerm}`])
+    this.searchTerm = '';
   }
 
 }
