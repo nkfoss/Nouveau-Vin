@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 
 @Component({
@@ -12,6 +13,7 @@ import { DataService } from '../data.service';
 export class NavbarComponent {
 
   searchTerm: string = '';
+  qweSub: Subscription;
 
   constructor(private dataService: DataService, private router: Router) { }
 
@@ -32,6 +34,7 @@ export class NavbarComponent {
 
   onSearch() {
     this.router.navigate([`/search/${this.searchTerm}`])
+    this.searchTerm = '';
   }
 
 }

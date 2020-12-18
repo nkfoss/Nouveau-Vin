@@ -1,5 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# portfolio stuff
+/portfolio
 # compiled output
 /dist
 /build
