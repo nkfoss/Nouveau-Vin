@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap 4 Website Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    .avatar {
+      border-radius: 50%;
+      max-width: 200px;
+      max-height: 100px;
+    }
+
+    .topnav {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    /* Style the links inside the navigation bar */
+    .topnav a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    /* Change the color of links on hover */
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Add an active class to highlight the current page */
+    .topnav a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    /* Hide the link that should open and close the topnav on small screens */
+    .topnav .icon {
+      display: none;
+    }
+
+    @media screen and (max-width: 600px) {
+      .topnav a:not(:first-child) {
+        display: none;
+      }
+
+      .topnav a.icon {
+        float: right;
+        display: block;
+      }
+    }
+
+    /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+    @media screen and (max-width: 600px) {
+      .topnav.responsive {
+        position: relative;
+      }
+
+      .topnav.responsive a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+    }
+
+    /* The sidebar menu */
+    .sidenav {
+      height: 100%;
+      /* Full-height: remove this if you want "auto" height */
+      width: 200px;
+      /* Set the width of the sidebar */
+      position: fixed;
+      /* Fixed Sidebar (stay in place on scroll) */
+      z-index: 1;
+      /* Stay on top */
+      top: 0;
+      /* Stay at the top */
+      left: 0;
+      background-color: #111;
+      /* Black */
+      overflow-x: hidden;
+      /* Disable horizontal scroll */
+      padding-top: 20px;
+    }
+
+    /* The navigation menu links */
+    .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+    }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+
+    /* Style page content */
+    .main {
+      margin-left: 160px;
+      /* Same as the width of the sidebar */
+      padding: 0px 10px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
+      }
+
+      .sidenav a {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- <div class="jumbotron text-center" style="margin-bottom:0">
+    <h1>Nathan K Foss</h1>
+    <p>what to put here?</p>
+  </div> -->
+
+  <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <div class="topnav" id="myTopnav">
+    <a href="#myWork" class="active">Home</a>
+    <a href="#contact">Contact</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div> -->
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="sidenav">
+
+        <!-- <div class="col-sm-4"> -->
+          <img class="avatar"
+            src="https://lh3.googleusercontent.com/nGsEflMtYu9GL9AWWia04B5PZFuIhkggjJjPhEq8Pyfqj7V2m8WixX0Ww2VNFSYxKeeINRxpq9cBPSuVhgSxW63rwWxn_Ph47ckmTxu9eLSYHpQKR2pCUG-DlyrOhqYOXcGS9Q0i=w2400"
+            alt="Avatar">
+          <hr class="d-sm-none">
+        <!-- </div> -->
+
+        <h2>About Me</h2>
+        <p>I am a 2020 graduate from the University of Minnesota Morris. I have a passion for software design and
+          explatory data analysis. I have created applications to help people track, summarize,
+          and uncover trends in data.
+        </p>
+
+        <h3>Relevant Links</h3>
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link" target="_blank"
+              href="https://drive.google.com/file/d/1Cg_BSUyfx7rCCJMb1yy2W9C7pQNjqBW-/view?usp=sharing">Resume</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://github.com/nkfoss">GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.hackerrank.com/fossphorus">HackerRank</a>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="col offset-3" id="main">
+        <div class="row">
+          <div class="col-sm-8">
+
+            <h1>Projects</h1>
+
+            <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <div class="card" style="width:400px">
+              <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+              <div class="card-body">
+                <h4 class="card-title">John Doe</h4>
+                <p class="card-text">Some example text.</p>
+                <a href="#" class="btn btn-primary">See Profile</a>
+              </div>
+            </div>
+            
+            <h2>TITLE HEADING</h2>
+            <h5>Title description, Sep 2, 2017</h5>
+            <div class="fakeimg">Fake Image</div>
+            <p>Some text..</p>
+            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+              ullamco.</p>
+
+            <h2>TITLE HEADING</h2>
+            <h5>Title description, Sep 2, 2017</h5>
+            <div class="fakeimg">Fake Image</div>
+            <p>Some text..</p>
+            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+              ullamco.</p>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  </div>
+
+
+  <!-- <div class="main" style="margin-top:30px">
+    <div class="row">
+      <div class="col-sm-4">
+        <img class="avatar"
+          src="https://lh3.googleusercontent.com/nGsEflMtYu9GL9AWWia04B5PZFuIhkggjJjPhEq8Pyfqj7V2m8WixX0Ww2VNFSYxKeeINRxpq9cBPSuVhgSxW63rwWxn_Ph47ckmTxu9eLSYHpQKR2pCUG-DlyrOhqYOXcGS9Q0i=w2400"
+          alt="Avatar">
+        <h2>About Me</h2>
+        <p>I am a 2020 graduate from the University of Minnesota Morris. I have a passion for software design and
+          explatory data analysis. I have created applications to help people track, summarize,
+          and uncover trends in data.
+        </p>
+        <h3>Relevant Links</h3>
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link" target="_blank"
+              href="https://drive.google.com/file/d/1Cg_BSUyfx7rCCJMb1yy2W9C7pQNjqBW-/view?usp=sharing">Resume</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://github.com/nkfoss">GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.hackerrank.com/fossphorus">HackerRank</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+
+      <div class="col-sm-8">
+        <h1>Projects</h1>
+
+        <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <div class="card" style="width:400px">
+          <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+          <div class="card-body">
+            <h4 class="card-title">John Doe</h4>
+            <p class="card-text">Some example text.</p>
+            <a href="#" class="btn btn-primary">See Profile</a>
+          </div>
+        </div> -->
+
+  <!-- <div class="card">
+          <img src="img.jpg" alt="John" style="width:100%">
+          <h1>John Doe</h1>
+          <p class="title">CEO & Founder, Example</p>
+          <p>Harvard University</p>
+          <a href="#"><i class="fa fa-dribbble"></i></a>
+          <a href="#"><i class="fa fa-twitter"></i></a>
+          <a href="#"><i class="fa fa-linkedin"></i></a>
+          <a href="#"><i class="fa fa-facebook"></i></a>
+          <p><button>Contact</button></p>
+        </div> -->
+
+  <br>
+
+  <!-- <h2>TITLE HEADING</h2>
+        <h5>Title description, Sep 2, 2017</h5>
+        <div class="fakeimg">Fake Image</div>
+        <p>Some text..</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco.</p>
+        <h2>TITLE HEADING</h2>
+        <h5>Title description, Sep 2, 2017</h5>
+        <div class="fakeimg">Fake Image</div>
+        <p>Some text..</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco.</p>
+      </div>
+    </div>
+  </div> -->
+  <!-- 
+  <div class="jumbotron text-center" style="margin-bottom:0">
+    <p>Footer</p>
+  </div> -->
+
+  <!-- <script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+  </script> -->
+
+</body>
+
+</html>
