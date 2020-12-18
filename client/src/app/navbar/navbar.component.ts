@@ -10,18 +10,12 @@ import { DataService } from '../data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent {
 
   searchTerm: string = '';
   qweSub: Subscription;
 
   constructor(private dataService: DataService, private router: Router) { }
-
-  ngOnInit() {
-    this.qweSub = this.dataService.qweSub.subscribe(
-      (data) => {console.log(data)}
-    )
-  }
 
   /**
    * Navigating will create the Review-List component. During init, this component will ask the Data Service for an array of objects matching the browsing criteria.
