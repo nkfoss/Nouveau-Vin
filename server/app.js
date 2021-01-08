@@ -11,9 +11,15 @@ app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "build")))
 
 app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');  // Incoming requests can come from '*' aka ANYWHERE
-	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // Incoming requests can have these headers
-	res.setHeader('Acces-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE');
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Incoming requests can come from '*' aka ANYWHERE
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, X-Forwarded-For, X-Real-IP, Content-Type, Accept"
+  ); // Incoming requests can have these headers
+  res.setHeader(
+    "Acces-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, DELETE"
+  );
 	next();
 });
 
