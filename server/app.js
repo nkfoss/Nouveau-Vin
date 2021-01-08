@@ -25,12 +25,12 @@ app.use((req, res, next) => {
 
 // Record the ip/timestamp of all requests
 app.use((req, res, next) => {
-	const ip = req.headers['x-forwared-for'] || req.connection.remoteAddress;
-	const query = `INSERT INTO requests values (?, NOW(6), ?)`;
-	mysqlDb.query(query, [ip, req.url], (error, results) => {
-		if (error) { res.send(error); }
-		else { next(); }
-	})
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const query = `INSERT INTO requests values (?, NOW(6), ?)`;
+  mysqlDb.query(query, [ip, req.url], (error, results) => {
+	if (error) { res.send(error); } 
+	else { next(); }
+  });
 });
 
 app.use('/robots.txt', function (req, res) {
