@@ -7,15 +7,15 @@ import { ReviewListComponent } from './review-list/review-list.component';
 
 
 const routes: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'about', component: AboutComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'variety/all', component: ReviewListComponent},
+  {path: 'nouveau', component: HomeComponent},
+  {path: 'nouveau/home', redirectTo: 'nouveau', pathMatch: 'full'},
+  {path: 'nouveau/about', component: AboutComponent},
+  {path: 'nouveau/login', component: LoginComponent},
+  {path: 'nouveau/variety/all', component: ReviewListComponent},
   
-  {path: ':browsingCriteria', component: ReviewListComponent},
-  {path: ':browsingCriteria/all', component: ReviewListComponent},
-  {path: ':browsingCriteria/:chosenCriteria', component: HomeComponent},
+  {path: 'nouveau/:browsingCriteria', component: ReviewListComponent},
+  {path: 'nouveau/:browsingCriteria/all', component: ReviewListComponent},
+  {path: 'nouveau/:browsingCriteria/:chosenCriteria', component: HomeComponent},
 ];
 
 
