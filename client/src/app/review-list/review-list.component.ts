@@ -18,9 +18,9 @@ export class ReviewListComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.url.subscribe((segments: UrlSegment[]) => {
-      this.browsingCriteria = segments[0].path
+      this.browsingCriteria = segments[1].path
 
-      if (segments.length === 2) {
+      if (segments.length === 3) {
         this.longView = true;
         this.dataService.fetchAllVarieties().subscribe(
           (fetched: BrowseItem[]) => {

@@ -1,7 +1,5 @@
-import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 
@@ -15,7 +13,7 @@ export class NavbarComponent {
   searchTerm: string = '';
   qweSub: Subscription;
 
-  constructor(private dataService: DataService, private router: Router) { }
+  constructor(private dataService: DataService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   /**
    * Navigating will create the Review-List component. During init, this component will ask the Data Service for an array of objects matching the browsing criteria.
@@ -25,15 +23,16 @@ export class NavbarComponent {
    */
   onNavigate(event: Event): void {
     let criteria = (<HTMLElement>event.target).textContent.toLowerCase();
-    this.router.navigate([`/${criteria}`]);
+    this.router.navigate([`nouveau/${criteria}`]);
+    console.log(this.activatedRoute);
   }
 
   onNavigateHome(): void {
-    this.router.navigate(['home'])
+    this.router.navigate(['nouveau/home'])
   }
 
   onSearch() {
-    this.router.navigate([`/search/${this.searchTerm}`])
+    this.router.navigate([`nouveau/search/${this.searchTerm}`])
     this.searchTerm = '';
   }
 
