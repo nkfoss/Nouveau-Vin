@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     "Acces-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, DELETE"
   );
-	next();
+  next();
 });
 
 // Record the ip/timestamp of all requests
@@ -39,14 +39,22 @@ app.use('/robots.txt', function (req, res) {
 	res.sendFile(path.join(__dirname, "robots.txt"))
 });
 
-app.use('/portfolio', (req,res,next) => {
-	res.sendFile(path.join(__dirname, "portfolio", "index.html"))
-})
+app.use("/contact", (req, res, next) => {
 
-app.use('/wine/api/', router); // Database
-app.use('/', (req, res, next) => {
-	res.sendFile(path.join(__dirname, "build", "index.html")) // Serve the Angular build
-});
+  let name = req.body["name"];
+  let email = req.body["email"];
+  let message = req.body["message"];
+
+  if ((name == null) | (message == null)) { res.sendStatus(200); } 
+  else {
+    const query = `INSERT INTO contact values (?, ?, ?, NOW(6))`;
+    mysqlDb.query(query, [name, email, message], (error, results) => {
+	  if (error) {
+      console.log(error); 
+      res.sendStatus(500); 
+    } 
+	  else { res.send(results); }
+    });
 
 
 
