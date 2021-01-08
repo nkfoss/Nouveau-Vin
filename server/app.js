@@ -1,14 +1,28 @@
-const path = require('path')
-const router = require('./routes/controller');
-const bodyParser = require('body-parser');
-const express = require('express');
-const mysqlDb = require('./db/mysqlConn');
+const path = require("path");
+const router = require("./routes/controller");
+const bodyParser = require("body-parser");
+const express = require("express");
+const mysqlDb = require("./db/mysqlConn");
 
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/", express.static(path.join(__dirname, "build")))
+// app.use('/', (req,res,next) => {
+//   res.redirect('/home');
+//   next();
+// })
+
+app.use("/nouveau", (req,res,next) => {
+  app.use( express.static(path.join(__dirname, "build")) );
+  next();
+});
+
+app.use("/", (req,res,next) => {
+  app.use( express.static(path.join(__dirname, "portfolio")))
+  next();
+})
+// app.use("/portfolio", express.static(path.join(__dirname, "portfolio")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // Incoming requests can come from '*' aka ANYWHERE
@@ -54,9 +68,16 @@ app.use("/contact", (req, res, next) => {
     } 
 	  else { res.send(results); }
     });
+  }
+});
 
+app.use("/home", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "portfolio", "index.html"));
+});
 
-
-
+app.use("/wine/api/", router); // Database
+app.use("/nouveau/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "build", "index.html")); // Serve the Angular build
+});
 
 module.exports = app; // This exports the app AND all the middlewares
