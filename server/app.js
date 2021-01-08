@@ -33,10 +33,9 @@ app.use((req, res, next) => {
   });
 });
 
-app.use('/robots.txt', function (req, res) {
-	console.log('hit')
-	res.type('text/plain');
-	res.sendFile(path.join(__dirname, "robots.txt"))
+app.use("/robots.txt", function (req, res) {
+  res.type("text/plain");
+  res.sendFile(path.join(__dirname, "robots.txt"));
 });
 
 app.use("/contact", (req, res, next) => {
