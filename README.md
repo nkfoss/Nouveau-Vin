@@ -71,7 +71,9 @@ UPDATE winereviews SET title = REGEXP_SUBSTR(title, '^[^(]* ');
 
 Now we can move on to the other tables.
 
-### Accessory tables
+### Database normalization
+
+With our giant table, can we start browsing for wine reviews? Yes, but first there are some things to make that easier. We can split the table up in a way that saves us some space and makes our queries faster.
 
 When browsing wine reviews, you can choose to browse by categories. Some of these categories are variety, critic, and country (we will use country as an example). There are many countries to browse, but only the database knows them all at any given time. If we want a list of countries to browse, we can get them (and the total entries for each) from the table, but that would take a very long time (the table is huge). Instead we will create a table for each browsing criteria that lists all the values and the number of records for each. Then we will fill these tables with data from the large table.
 
@@ -91,6 +93,16 @@ ALTER TABLE winereviews ADD COLUMN (fkCountry integer unsigned not null);
 UPDATE winereviews AS w JOIN countries AS c ON w.country = c.country SET w.fkCountry = c.id;
 ALTER TABLE winereviews DROP COLUMN country;
 ```
+
+We saved space by turning those strings into integers. But it's not FASTER... yet. We are going to add a constraint to our table called a 'foreign key' (be sure to do this with the other browsing criteria as well).
+
+```SQL
+ALTER TABLE winereviews
+ADD CONSTRAINT FOREIGN KEY (fkCountry) 
+REFERENCES countries (id);
+```
+Why does this make things faster? Simplified, the database uses it to better optimize its queries on table joins. The internet is your friend if you want to know more.
+
 
 With seperate tables made for our browsing criteria, we can finally hook the database up to the server.
 
