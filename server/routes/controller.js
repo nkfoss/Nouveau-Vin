@@ -65,7 +65,7 @@ router.get('/count', function(req,res,next) {
 
 // Record all attempts to login to the site
 router.post('/login', function (req, res, next) {
-  
+
   let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
   let username = req.body['username'];
   let password = req.body['password'];
@@ -129,25 +129,14 @@ function createParamsArray(param) {
   return arr;
 }
 
+// Fetch a list of browsing criteria and number of reviews for each. 
 router.get('/:browsingCriteria', function (req, res, next) {
-  let query = '';
-  if (req.params.browsingCriteria === "countries") { query = 'SELECT country AS value, numReviews FROM countries'; }
-  else if (req.params.browsingCriteria === "varieties") { query = `SELECT variety AS value, numReviews FROM varieties WHERE numReviews > 1000 ORDER BY value`; }
-  else if (req.params.browsingCriteria === "critics") { query = 'SELECT taster_name AS value, numReviews FROM tasters'; }
-
-  mysqlDb.query(query, [], (error, results) => {
+  let query = "CALL usp_SelectBrowsingCriteria(?)";
+  mysqlDb.query(query, [req.params.browsingCriteria], (error, results) => {
     if (error) { res.send(error); }
     else { res.send(results); }
   })
 });
-
-router.get('/variety/all', function (req, res, next) {
-  let query = "SELECT variety as value FROM varieties"
-  mysqlDb.query(query, [], (error, results) => {
-    if (error) { res.send(error); }
-    else { res.send(results); }
-  })
-})
 
 //=======================================================================================
 module.exports = router;
