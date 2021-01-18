@@ -14,9 +14,10 @@ const searchWhere = 'WHERE w.description LIKE ? OR ' +
   'w.region_1 LIKE ? OR ' + 't.taster_name LIKE ? OR ' +
   't.taster_twitter LIKE ? '
 
+// Fetch all the reviews with a search term, or with a browsing criteria.
 router.get('/reviews', function(req,res,next) {
   let query = "SELECT * FROM " + joinedTables;
-  let paramsArray = []
+  let paramsArray = [];
   if (req.query['searchTerm']) {
     query += searchWhere;
     paramsArray = createParamsArray(req.query['searchTerm']);
@@ -62,13 +63,17 @@ router.get('/count', function(req,res,next) {
 })
 
 
+// Record all attempts to login to the site
 router.post('/login', function (req, res, next) {
+  
   let ip = req.header['x-forwarded-for'] || req.connection.remoteAddress;
   let username = req.body['username'];
   let password = req.body['password'];
 
-  let query = 'INSERT INTO logins values (?, NOW(6), ?, ?)';
-  console.log(query)
+  // let query = 'INSERT INTO logins values (?, NOW(6), ?, ?)';
+  // console.log(query)
+
+  let query = "CALL usp_InsertLogin(?, ?, ?)"
   mysqlDb.query(query, [ip, username, password], (error, results) => {
     if (error) { res.send(error) }
     else { res.status(500).send('There was an unknown error. Please check your input.') }
