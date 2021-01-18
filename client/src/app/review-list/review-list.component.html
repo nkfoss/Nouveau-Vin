@@ -1,30 +1,39 @@
 <div class="container" style="margin-top: 30px">
+
 	<div class="jumbotron text-center">
 		<h1>{{ browsingCriteria | uppercase }}</h1>
 		<p>Choose a {{ browsingCriteria }} to see wine reviews.</p>
 	</div>
+
+	<!-- View for normal criteria list (tasters, countries, and some varieties) -->
 	<div class="col" *ngIf="!this.longView">
-		<div class="row" *ngIf="this.browsingCriteria === 'varieties'">
-			Some varieties not listed...
-			<a routerLink="all" style="padding-left: 5px"> Click here to see all varieties.</a>
+		<div class="row mt-1" *ngIf="this.fullList.length > 20">
+			Not all {{this.browsingCriteria }} listed... 
+			<a class="varietyLink ml-1" (click)="this.longView = true"> Click here to see all {{ this.browsingCriteria }}.</a>
 			<hr>
 		</div>
 		<div class="row cardList">
-			<div *ngFor="let browseItem of browseItems; index as i" class="card" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title countryName" (click)="onChooseCriteria(i)">{{ browseItem.value }}</h5>
-					<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ browseItem.numReviews }}</h6>
+			<div *ngFor="let browseItem of browseItems; index as i">
+				<div *ngIf="browseItem.value != null" class="card" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title countryName" (click)="onChooseCriteria(browseItem.value)">{{ browseItem.value }}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Reviews: {{ browseItem.numReviews }}</h6>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- View for full variety list -->
 	<div class="col" *ngIf="this.longView">
+		<a class="varietyLink ml-1" (click)="this.longView = false"> Click here to see most popular {{ this.browsingCriteria }}.</a>
 		<div class="row cardList">
 			<ul>
-				<li *ngFor="let variety of browseItems">
-					<a routerLink="/varieties/{{ variety.value }}">{{ variety.value }}</a>
+				<li *ngFor="let browseItem of fullList">
+					<a routerLink="" (click)="onChooseCriteria(browseItem.value)">{{ browseItem.value }}</a>
 				</li>
 			</ul>
 		</div>
 	</div>
+
 </div>
