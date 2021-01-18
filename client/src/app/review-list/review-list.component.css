@@ -47,6 +47,15 @@
 	}
 }
 
+.varietyLink {
+	color: blue
+}
+
+.varietyLink:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 ul li {
 	list-style-position:  inside;
 	-webkit-column-break-inside: avoid;
