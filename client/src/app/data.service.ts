@@ -16,6 +16,11 @@ export class DataService {
 
   constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
 
+  /**
+   * A decoy login function. Used for recording hack attempts.
+   * @param username 
+   * @param password 
+   */
   login(username: string, password: string) {
     return this.http.post(
       `${this.apiUrl}/login`,
@@ -27,18 +32,26 @@ export class DataService {
     );
   }
 
+  
+
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http.get<BrowseItem[]>(`${this.apiUrl}/${browsingCriteria}`, {
       responseType: "json",
     });
   }
 
+  /**
+   * *** DEPRECATED *** : used for fetching full list of varieties
+   */
   fetchAllVarieties(): Observable<BrowseItem[]> {
     return this.http.get<BrowseItem[]>(`${this.apiUrl}/variety/all`, {
       responseType: "json",
     });
   }
 
+  /**
+   * Get the random reviews for the home page.
+   */
   fetchRandoms(): Observable<any> {
     return this.http.get(`${this.apiUrl}/countReviews`, {
       responseType: "json",
