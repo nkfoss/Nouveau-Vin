@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // In this case, we were just loading the homepage with random reviews
     else {
       this.dataService.fetchRandoms().subscribe(
-        (reviews: any) => { this.selectedReviews = reviews;},
+        (reviews: any) => { this.selectedReviews = reviews[0];},
         (error) => { console.log(error);}
       );
     }
