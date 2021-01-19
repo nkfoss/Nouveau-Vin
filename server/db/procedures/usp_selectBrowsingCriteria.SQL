@@ -4,7 +4,6 @@ CREATE PROCEDURE nkfoss.usp_SelectBrowsingCriteria(
 	IN criteria VARCHAR(50)
 )
 BEGIN
-	SET NO COUNT ON;
 	CASE criteria
 		WHEN 'countries' THEN SELECT country as value, numReviews from countries;
 		WHEN 'varieties' THEN SELECT variety as value, numReviews from varieties;

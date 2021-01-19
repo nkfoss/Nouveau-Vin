@@ -32,8 +32,6 @@ export class DataService {
     );
   }
 
-  
-
   fetchBrowseItems(browsingCriteria: string): Observable<BrowseItem[]> {
     return this.http.get<BrowseItem[]>(`${this.apiUrl}/${browsingCriteria}`, {
       responseType: "json",
