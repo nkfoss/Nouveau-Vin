@@ -70,9 +70,6 @@ router.post('/login', function (req, res, next) {
   let username = req.body['username'];
   let password = req.body['password'];
 
-  // let query = 'INSERT INTO logins values (?, NOW(6), ?, ?)';
-  // console.log(query)
-
   let query = "CALL usp_InsertLogin(?, ?, ?)"
   mysqlDb.query(query, [ip, username, password], (error, results) => {
     if (error) { res.send(error) }
@@ -80,34 +77,14 @@ router.post('/login', function (req, res, next) {
   })
 })
 
+// This what is used to populate the home page with random reviews.
 router.get('/countReviews', function (req, res, next) {
-  let query = 'SELECT count(*) AS count FROM wineReviews';
+  let query = 'CALL usp_SelectRandoms()';
   mysqlDb.query(query, [], (error, results) => {
-
     if (error) { res.send(error); }
-    else {
-      let numRows = results[0].count;
-      query = getRandomsQuery(numRows);
-      mysqlDb.query(query, [], (error, results) => {
-        if (error) { res.send(error); }
-        else { res.send(results); }
-      })
-    }
+    else { res.send(results); }
   })
 })
-
-function getRandomsQuery(numRows) {
-  let idList = "("; let count = 0;
-  while (count < 18) {
-    let rand = Math.floor(Math.random() * numRows);
-    idList = idList.concat(rand);
-    idList = idList.concat(', ');
-    count++;
-  }
-  idList = idList.replace(/,[ ]$/, ')')
-  let query = "SELECT * FROM " + joinedTables + 'WHERE w.id IN ' + idList;
-  return query;
-}
 
 router.get('/search/:searchTerm', function (req, res, next) {
   let query = "SELECT * FROM " + 
@@ -129,7 +106,7 @@ function createParamsArray(param) {
   return arr;
 }
 
-// Fetch a list of browsing criteria and number of reviews for each. 
+// Get a list of all possible browsing criteria, and the number of reviews.
 router.get('/:browsingCriteria', function (req, res, next) {
   let query = "CALL usp_SelectBrowsingCriteria(?)";
   mysqlDb.query(query, [req.params.browsingCriteria], (error, results) => {
