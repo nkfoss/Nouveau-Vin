@@ -22,12 +22,9 @@ router.get('/reviews', function(req,res,next) {
     query += searchWhere;
     paramsArray = createParamsArray(req.query['searchTerm']);
   }
-  else {
-    let bc = req.query['browsingCriteria'];
-    if      (bc === 'countries') { query += 'WHERE c.country = ? '; }
-    else if (bc === 'varieties') { query += 'WHERE v.variety = ? '; }
-    else if (bc === 'critics')   { query += 'WHERE t.taster_name = ? '; }
-    paramsArray = req.query['selectedCriteria'];
+  else {                          // Get reviews by selected criteria 
+    params = [...params, req.query['browsingCriteria'], req.query['selectedCriteria']];
+    query = "CALL usp_SelectedCriteria(?, ?, ?, ?)"
   }
 
     let page = req.query['page'];
