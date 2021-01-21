@@ -51,11 +51,16 @@ export class DataService {
    * Get the random reviews for the home page.
    */
   fetchRandoms(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/countReviews`, {
+    return this.http.get(`${this.apiUrl}/fetchRandoms`, {
       responseType: "json",
     });
   }
 
+  /**
+   * Gets a count of reviews matching search term, then uses
+   * the count to get the correct number of reviews (for page 1)
+   * @param searchTerm 
+   */
   countSearchedReviews(searchTerm: string) {
     this.http
       .get(`${this.apiUrl}/count?searchTerm=${searchTerm}`, {
@@ -67,23 +72,33 @@ export class DataService {
       });
   }
 
+  /**
+   * Gets a certain number of reviews for the page number entered.
+   * Triggers the sub to send out the reviews, current/max pages, and a header containing the search term. 
+   * @param searchTerm The seach term to use.
+   * @param targetPage The page number. It's used as a multiplier for determining where to start and end the count of reviews.
+   */
   getSearchedReviews(searchTerm: string, targetPage: number) {
     this.http
       .get(
         `${this.apiUrl}/reviews?searchTerm=${searchTerm}&page=${targetPage}`,
         { responseType: "json" }
       )
-      .subscribe((reviews: ReviewItem[]) => {
-        console.log("sending out sub");
+      .subscribe((response: any[]) => {
         this.selectedReviewsSub.next({
           currPage: targetPage,
-          maxPages: this.maxPages,
-          selectedReviews: reviews,
+          maxPages: Math.ceil( response[1].affectedRows / 18),
+          selectedReviews: response[0],
           message: `Showing results for: "${searchTerm}" `,
         });
       });
   }
 
+  /**
+   * Used for getting a count of reviews matching an instance of search criteria.
+   * @param browsingCriteria 'Country', 'variety', or 'taster'.
+   * @param selectedCriteria The specific country, variety, or taster.
+   */
   countSelectedReviews(browsingCriteria: string, selectedCriteria: string) {
     this.http
       .get(
@@ -96,16 +111,22 @@ export class DataService {
       });
   }
 
+  /**
+   * Used for getting a certain count/page number of reviews.
+   * @param browsingCriteria 
+   * @param chosenCriteria 
+   * @param targetPage 
+   */
   getSelectedReviews(browsingCriteria: string, chosenCriteria: string, targetPage: number) {
     this.http
       .get(
         `${this.apiUrl}/reviews?browsingCriteria=${browsingCriteria}&selectedCriteria=${chosenCriteria}&page=${targetPage}`
       )
-      .subscribe((reviews: ReviewItem[]) => {
+      .subscribe((response: any[]) => {
         this.selectedReviewsSub.next({
           currPage: targetPage,
-          maxPages: this.maxPages,
-          selectedReviews: reviews,
+          maxPages: Math.ceil( response[1].affectedRows / 18 ),
+          selectedReviews: response[0]
         });
       });
   }

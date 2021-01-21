@@ -44,7 +44,7 @@ router.get('/reviews', function(req,res,next) {
 router.get('/count', function(req,res,next) {
   let query = "SELECT count (*) as count FROM " + joinedTables;
   let paramsArray = [];
-  if (req.query['searchTerm']) {
+router.get('/fetchRandoms', function (req, res, next) {
     query += searchWhere;
     paramsArray = createParamsArray(req.query['searchTerm']);
   }
