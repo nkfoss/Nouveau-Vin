@@ -9,7 +9,7 @@ BEGIN
 	-- The idList is a string of concatenated ID's to be prepared in a stmt
 	SET @idList = '(';
 
-	-- The loop will calculate a random id, then concat into idList.
+	-- The loop will calculate a random id, then concat into idList. Later, this will be prepared stmt.
 	set @randId = 0;
 	set @count = 0;
 	WHILE @count < 19 DO
@@ -19,6 +19,7 @@ BEGIN
 	END WHILE;
 	SELECT REGEXP_REPLACE(@idList, ', $', ')') INTO @idList;
 
+	-- Prepare stmt from idList
 	set @stmt = 'SELECT w.points, w.title, w.price,
 	w.province, c.country, 
 	w.description, t.taster_name, t.taster_twitter
