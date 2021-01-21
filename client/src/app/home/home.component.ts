@@ -26,19 +26,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   maxPages: number;
 
   selectedReviewsSub: Subscription;
-  private onSelectedReviewsUpdated() {
-    this.selectedReviewsSub = this.dataService.selectedReviewsSub.subscribe(
-      (data) => {
-        this.currPage = data.currPage;
-        this.maxPages = data.maxPages;
-
-        if (data.selectedReviews.length === 0) { this.loadingStatus = "No results to show"; } 
-        else { this.selectedReviews = data.selectedReviews; }
-        
-        if (data.message) { this.subheading = data.message;}
-      }
-    );
-  }
 
   //==============================================================================================================
   constructor(
@@ -54,29 +41,49 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Actions to take when an update is received from selected reviews sub: 
+   * 1.) Set the current and max pages (received from sub)... 2.) Handle the received reviews... 3.) Set subheading (if there is a message)
+   */
+  private onSelectedReviewsUpdated() {
+    this.selectedReviewsSub = this.dataService.selectedReviewsSub.subscribe(
+      (data) => {
+        this.currPage = data.currPage;
+        this.maxPages = data.maxPages;
+
+        if (data.selectedReviews.length === 0) { this.loadingStatus = "No results to show"; } 
+        else { this.selectedReviews = data.selectedReviews; }
+
+        if (data.message) { this.subheading = data.message;}
+      }
+    );
+  }
+
+  /**
+   * Take action on the route updating (depending on how it updates).
+   * @param params The params object received from the activated route.
+   */
   private handleNewParams(params: Params) {
-    // In this case, we have some kind of category of reviews
-    if (params["browsingCriteria"]) {
-      if (params["browsingCriteria"] === "search") {
-        // Categorized by search term
+
+    if (params["browsingCriteria"]) {               // Case 1: Fetch specifc reviews.
+
+      if (params["browsingCriteria"] === "search") { // Case 1a: Fetch reviews by a search term.
         this.selectedReviews = [];
         this.loadingStatus = "Loading...";
         this.heading = params["chosenCriteria"];
         this.subheading = `Searching for '${this.heading}'...`;
         this.dataService.getSearchedReviews( params["chosenCriteria" ], 1);
-      } else {
-        // Variety or country or taster category
+      } 
+
+      else {                                        // Case 1b: Fetch by browsing criteria
         this.browsingCriteria = params["browsingCriteria"];
         this.chosenCriteria = params["chosenCriteria"];
         this.setHeadings();
         this.dataService.getSelectedReviews( params["browsingCriteria"], params["chosenCriteria"], 1 );
-          this.browsingCriteria,
-          this.chosenCriteria
-        );
       }
     }
-    // In this case, we were just loading the homepage with random reviews
-    else {
+
+    else {                                            // Case 2: Fetch random reviews
       this.dataService.fetchRandoms().subscribe(
         (reviews: any) => { this.selectedReviews = reviews[0]; },
         (error) => { console.log(error);}
@@ -120,10 +127,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.open(url, "_blank");
   }
 
-  onBrowseCritic(name: string) {
-    console.log("critic/" + name);
-    this.router.navigate(["critic/" + name]);
-  }
+  onBrowseCritic(name: string) { this.router.navigate(["critic/" + name]); }
 
   previousClass(): string {
     if (this.currPage > 1) { return "page-item"; }
