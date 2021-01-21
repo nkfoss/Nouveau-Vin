@@ -63,13 +63,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loadingStatus = "Loading...";
         this.heading = params["chosenCriteria"];
         this.subheading = `Searching for '${this.heading}'...`;
-        this.dataService.countSearchedReviews(this.heading);
+        this.dataService.getSearchedReviews( params["chosenCriteria" ], 1);
       } else {
         // Variety or country or taster category
         this.browsingCriteria = params["browsingCriteria"];
         this.chosenCriteria = params["chosenCriteria"];
         this.setHeadings();
-        this.dataService.countSelectedReviews(
+        this.dataService.getSelectedReviews( params["browsingCriteria"], params["chosenCriteria"], 1 );
           this.browsingCriteria,
           this.chosenCriteria
         );
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // In this case, we were just loading the homepage with random reviews
     else {
       this.dataService.fetchRandoms().subscribe(
-        (reviews: any) => { this.selectedReviews = reviews[0];},
+        (reviews: any) => { this.selectedReviews = reviews[0]; },
         (error) => { console.log(error);}
       );
     }
