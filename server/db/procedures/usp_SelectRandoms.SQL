@@ -4,12 +4,13 @@ CREATE PROCEDURE usp_selectRandoms()
 BEGIN
 	-- Get the total number of reviews
 	DECLARE n MEDIUMINT UNSIGNED;
-	SELECT count(*) INTO n from wineReviews;
+	SELECT nkfoss.f_GetROWCOUNT('winereviews') INTO n;
 
 	-- The idList is a string of concatenated ID's to be prepared in a stmt
 	SET @idList = '(';
 
-	-- The loop will calculate a random id, then concat into idList. Later, this will be prepared stmt.
+	-- The loop will calculate a random id, then concat into idList.
+	-- THe idlist will be used with a prepared WHERE IN statement.
 	set @randId = 0;
 	set @count = 0;
 	WHILE @count < 19 DO
