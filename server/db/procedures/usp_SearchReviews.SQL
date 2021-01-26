@@ -10,7 +10,6 @@ BEGIN
 	DROP TEMPORARY TABLE IF EXISTS temp;
 
 	-- Create temporary table for counting and pagination
-	SET @searchTerm = CONCAT('%', searchTerm, '%');
 	SET @stmt1 = "
 	CREATE TEMPORARY TABLE IF NOT EXISTS
 	temp AS 
