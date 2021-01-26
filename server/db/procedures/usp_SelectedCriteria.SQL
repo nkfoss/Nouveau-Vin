@@ -7,15 +7,8 @@ CREATE PROCEDURE usp_SelectedCriteria(
 	IN selectedCriteria VARCHAR(30)
 )
 BEGIN
-
-	DROP TEMPORARY TABLE IF EXISTS temp;
-
-	-- Create temporary table 
+	-- Construct the select query without the WHERE clause
 	SET @stmt = "
-	CREATE TEMPORARY TABLE IF NOT EXISTS
-	temp 
-	CHARACTER SET utf8 COLLATE utf8_general_ci
-	AS
 	SELECT w.points, w.title, w.price,
 	w.province, c.country, 
 	w.description, t.taster_name, t.taster_twitter
@@ -24,6 +17,7 @@ BEGIN
   	JOIN tasters AS t ON w.fkTaster = t.id 
 	JOIN varieties AS v ON fkvariety = v.id ";
  
+	-- Construct the WHERE clause dependent on browsing criteria, then combine with SELECT stmt
 	CASE browsingCriteria 
 		WHEN 'countries'
 		THEN BEGIN
@@ -40,18 +34,17 @@ BEGIN
 		END;
 	END CASE;
 
-	SET collation_connection = 'utf8_general_ci';
-	SET @stmt = CONCAT(@stmt, browsingCriteria);
+	-- IMPORTANT: Set collation for the concatenation, otherwise it will fail.
+	SET @stmt = CONCAT((CAST(@stmt AS CHAR CHARACTER SET utf8)), CAST(browsingCriteria AS CHAR CHARACTER SET utf8));
 
+	-- Append the LIMIT AND OFFSET clauses
+	SET @stmt = CONCAT(@stmt, "LIMIT ? OFFSET ?");
+
+	-- Prepare statement and execute with the provided
 	PREPARE stmt FROM @stmt;
-	set @selectedCriteria = selectedCriteria;
-	EXECUTE stmt USING selectedCriteria;
-
-	-- Now return the page number requested.
 	SET @offset = 18 * (pageNum -1);
-	SET @stmt2 = CONCAT( "SELECT * FROM temp LIMIT ? OFFSET ?");
-	PREPARE stmt2 FROM @stmt2;
-	EXECUTE stmt2 USING reviewsPerPage, @offset;
+	EXECUTE stmt USING selectedCriteria, reviewsPerPage, @offset;
+
 
 END //
 
