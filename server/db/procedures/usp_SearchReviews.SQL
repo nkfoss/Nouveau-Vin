@@ -19,10 +19,9 @@ BEGIN
 	FROM wineReviews AS w 
 	JOIN countries AS c ON w.fkCountry = c.id 
 	JOIN tasters AS t ON w.fkTaster = t.id 
-	WHERE w.description LIKE ? OR c.country LIKE ? OR w.province LIKE ? 
-	OR t.taster_name LIKE ? OR t.taster_twitter LIKE ?";
+	WHERE MATCH(w.description) AGAINST(?)";
 	PREPARE stmt1 from @stmt1;
-	EXECUTE stmt1 USING @searchTerm, @searchTerm, @searchTerm, @searchTerm, @searchTerm;
+	EXECUTE stmt1 USING @searchTerm;
 
 	-- Now return the page number requested.
 	SET @offset = 18 * (pageNum -1);
