@@ -87,7 +87,7 @@ export class DataService {
       .subscribe((response: any[]) => {
         this.selectedReviewsSub.next({
           currPage: targetPage,
-          maxPages: Math.ceil( response[1].affectedRows / 18),
+          maxPages: Math.ceil( response[1][0].found_rows / 18),
           selectedReviews: response[0],
           message: `Showing results for: "${searchTerm}" `,
         });
@@ -125,7 +125,7 @@ export class DataService {
       .subscribe((response: any[]) => {
         this.selectedReviewsSub.next({
           currPage: targetPage,
-          maxPages: Math.ceil( response[1].affectedRows / 18 ),
+          maxPages: Math.ceil( response[1][0].found_rows / 18 ),
           selectedReviews: response[0]
         });
       });
