@@ -11,8 +11,10 @@ import { BrowseItem } from "../shared/browseitem.model";
 export class ReviewListComponent implements OnInit {
   
   // Criteria is variety, country, or taster. The array is the list of all countries, tasters, and SOME varieties.
-  browsingCriteria: string;
   browseItems: BrowseItem[];
+  browsingCriteria: string;
+  heading: string;
+  subheading: string;
 
   // In the long-view, we display ALL varieties (not the browse-items).
   longView = false;
@@ -27,13 +29,31 @@ export class ReviewListComponent implements OnInit {
   // Setup the router subscription and update criteria list.
   ngOnInit() {
     this.activatedRoute.url.subscribe((segments: UrlSegment[]) => {
-      this.longView = false; // Reset the view on update.
       this.browsingCriteria = segments[1].path;
-      this.dataService.fetchBrowseItems(this.browsingCriteria).subscribe(
+      this.longView = false; // Reset the view on update.
+      this.setHeadings(segments[1].path); // segments[1] is the Browsing criteria
+
+      this.dataService.fetchBrowseItems(segments[1].path).subscribe( 
         (fetched: any[]) => { this.sortCriteria(fetched[0]) }, // The first item is the array of our data. The second item is metadata.
         (error) => { this.browseItems = []; }
       );
     });
+  }
+
+  // Sets the main/sub headings, dependent on the browsing criteria (segmentPath).
+  setHeadings(segmentPath: string): void {
+    this.heading = segmentPath.toUpperCase();
+    switch(segmentPath) {
+      case 'countries':
+        this.subheading = "Browse wines from a particular country"
+        break;
+      case 'varieties':
+        this.subheading = "Browse wines a particular variety"
+        break;
+      case 'critics':
+        this.subheading = "Browse wines reviewed by a particular critic"
+        break;
+    }
   }
 
   /**
