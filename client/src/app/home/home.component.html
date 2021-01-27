@@ -29,45 +29,65 @@
         style="width: 18rem"
       >
         <h5 class="card-header">
-          <span class="points" title="{{ reviewItem.points }} / 100 points">
+          <!-- <span class="points" title="{{ reviewItem.points }} / 100 points">
             {{ reviewItem.points }}
-          </span>
+          </span> -->
           {{ reviewItem.title }}
           <div>
             <span class="location">
               {{ this.getLocationHeading(reviewItem) }}
             </span>
-            <span class="price" *ngIf="reviewItem.price"
+            <!-- <span class="price" *ngIf="reviewItem.price"
               >${{ this.roundDecimal(reviewItem.price) }}
-            </span>
+            </span> -->
           </div>
         </h5>
+
         <div class="card-body">
           <h6 class="card-content mb-2 text-muted">
             {{ reviewItem.description }}
           </h6>
         </div>
+
         <div class="card-footer">
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="onBrowseCritic(reviewItem.taster_name)"
-            >
-              {{ reviewItem.taster_name }}
-            </button>
-            <button
-              *ngIf="reviewItem.taster_twitter"
-              type="button"
-              class="btn btn-secondary handle"
-              (click)="onNavigateTwitter(reviewItem.taster_twitter)"
-            >
-              {{ reviewItem.taster_twitter }}
-            </button>
+    
+          <div class="row px-1 pb-1 justify-content-between" style="font-weight: bold;">
+            <div class="col-9" *ngIf="reviewItem.points">
+                <span class="points">&#11088;{{ reviewItem.points }} / 100 </span>
+            </div>
+      
+            <div class="col-3" *ngIf="reviewItem.price" style="color:dimgrey; font-style: italic;">
+              ${{ this.roundDecimal(reviewItem.price) }}
+            </div>
           </div>
+
+          <div *ngIf="reviewItem.taster_name">
+            <hr>
+            <div
+              class="btn-group btn-group-sm"
+              role="group"
+              aria-label="Basic example">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="onBrowseCritic(reviewItem.taster_name)">
+                {{ reviewItem.taster_name }}
+              </button>
+              <button
+                *ngIf="reviewItem.taster_twitter"
+                type="button"
+                class="btn btn-secondary handle"
+                (click)="onNavigateTwitter(reviewItem.taster_twitter)">
+                {{ reviewItem.taster_twitter }}
+              </button>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
+
     <div *ngIf="this.currPage" class="row" style="justify-content: center">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
