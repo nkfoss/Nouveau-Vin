@@ -8,10 +8,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
-// app.use('/', (req,res,next) => {
-//   res.redirect('/home');
-//   next();
-// })
+app.all('/', (req,res,next) => {
+  res.redirect('/home');
+  next();
+})
 
 app.use("/nouveau", (req,res,next) => {
   app.use( express.static(path.join(__dirname, "build")) );
