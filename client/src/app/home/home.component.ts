@@ -34,6 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
+  // First, set up sub to receive selected reviews and page number.
+  // Second, look at route parameters and call a Data-Service method dependent on those parameters.
   ngOnInit() {
     this.onSelectedReviewsUpdated();
     this.activatedRoute.params.subscribe((params: Params) => {
