@@ -4,7 +4,7 @@ CREATE PROCEDURE usp_selectRandoms()
 BEGIN
 	-- Get the total number of reviews
 	DECLARE n MEDIUMINT UNSIGNED;
-	SELECT nkfoss.f_GetROWCOUNT('winereviews') INTO n;
+	SELECT nkfoss.f_GetROWCOUNT('wineReviews') INTO n;
 
 	-- The idList is a string of concatenated ID's to be prepared in a stmt
 	SET @idList = '(';
@@ -14,13 +14,13 @@ BEGIN
 	set @randId = 0;
 	set @count = 0;
 	WHILE @count < 19 DO
-		SELECT FLOOR( RAND() * n) INTO @randId;
-		SELECT CONCAT( @idList, @randId, ', ') INTO @idList;
-		SET @count = @count + 1;
+	SELECT FLOOR( RAND() * n) INTO @randId;
+	SELECT CONCAT( @idList, @randId, ', ') INTO @idList;
+	SET @count = @count + 1;
 	END WHILE;
 	SELECT REGEXP_REPLACE(@idList, ', $', ')') INTO @idList;
 
-	-- Prepare stmt from idList
+	-- Prepare stmt from idList. Only include entries with ID's in idList
 	set @stmt = 'SELECT w.points, w.title, w.price,
 	w.province, c.country, 
 	w.description, t.taster_name, t.taster_twitter
