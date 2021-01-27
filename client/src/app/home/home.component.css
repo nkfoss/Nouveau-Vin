@@ -34,11 +34,12 @@
 }
 
 .points {
-	background-color: limegreen;
-	color: white;
+	/* background-color: limegreen; */
+	/* color: white; */
+	font-weight: bold;
 	padding-left: 4px;
 	padding-right: 4px;
-	border-radius: 10%;
+	border-radius: 2%;
 }
 
 .location {
